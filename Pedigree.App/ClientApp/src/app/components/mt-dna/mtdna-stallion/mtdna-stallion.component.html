@@ -1,0 +1,109 @@
+<div class="tab-view">
+    <div class="row mx-1 mt-2">
+        <div class="col-sm-3">
+            <app-horse-search label="Stallion" sex="Male" [(value)]="horse"></app-horse-search>
+        </div>
+        <div class="col-sm-2 mt-2">
+            <button mat-mini-fab (click)="search()" [disabled]="!enableSearch()" color="primary">
+                <mat-icon>search</mat-icon>
+            </button>
+            <button *ngIf="showSearchClear" class="ml-2" mat-mini-fab (click)="clearSearchBox()" color="accent">
+                <mat-icon>clear</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <div class="mat-elevation-z8">
+        <div class="loading-overlay" *ngIf="loadingData || isRateLimitReached">
+            <mat-spinner *ngIf="loadingData"></mat-spinner>
+        </div>
+        <div>
+            <table mat-table [dataSource]="dataSource" matSort matSortActive="name" matSortDisableClear matSortDirection="asc">
+
+                <ng-container matColumnDef="group">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>HaploGroup</b></th>
+                    <td mat-cell *matCellDef="let row">
+                        <span [ngStyle]="{'background-color': row.color}" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>&nbsp;{{row.title}}</span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="ref_pop_count">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Offspring</b></th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="row.refPopCount > 0 && 'text-danger'">{{row.refPopCount}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="ref_pop_count_percent">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Offspring(%)</b></th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="row.refPopCountPercent > 0 && 'text-danger'">{{row.refPopCountPercent}}%</td>
+                </ng-container>
+
+                <ng-container matColumnDef="rated_horses">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Rated Horses</b></th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="row.ratedHorses > 0 && 'text-danger'">{{row.ratedHorses}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="rated_horses_percent">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Rated Horses(%)</b></th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="row.ratedHorsesPercent > 0 && 'text-danger'">{{row.ratedHorsesPercent}}%</td>
+                </ng-container>
+
+                <ng-container matColumnDef="three_plus_stars">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>3+ Starts</b></th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="row.threePlusStarts > 0 && 'text-danger'">{{row.threePlusStarts}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="three_plus_stars_percent">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>3+ Starts(%)</b></th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="row.threePlusStartsPercent > 0 && 'text-danger'">{{row.threePlusStartsPercent}}%</td>
+                </ng-container>
+
+                <ng-container matColumnDef="g1wnr">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>G1Wnr</b></th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="row.g1Wnr > 0 && 'text-danger'">{{row.g1Wnr}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="g1wnr_percent">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>G1Wnr(%)</b></th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="row.g1WnrPercent > 0 && 'text-danger'">{{row.g1WnrPercent}}%</td>
+                </ng-container>
+
+                <ng-container matColumnDef="g2wnr">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>G2Wnr</b></th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="row.g2Wnr > 0 && 'text-danger'">{{row.g2Wnr}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="g2wnr_percent">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>G2Wnr(%)</b></th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="row.g2WnrPercent > 0 && 'text-danger'">{{row.g2WnrPercent}}%</td>
+                </ng-container>
+
+                <ng-container matColumnDef="g3wnr">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>G3Wnr</b></th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="row.g3Wnr > 0 && 'text-danger'">{{row.g3Wnr}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="g3wnr_percent">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>G3Wnr(%)</b></th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="row.g3WnrPercent > 0 && 'text-danger'">{{row.g3WnrPercent}}%</td>
+                </ng-container>
+
+                <ng-container matColumnDef="swnr">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>SWnr</b></th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="row.sWnr > 0 && 'text-danger'">{{row.sWnr}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="swnr_percent">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>SWnr(%)</b></th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="row.sWnrPercent > 0 && 'text-danger'">{{row.sWnrPercent}}%</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            </table>
+
+            <div class="p-5 text-center text-danger" *ngIf="resultsLength === 0">No Results to show at the moment.</div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,25 @@
+<div id="title" class="row">
+    <div class="col-md-12">
+        <label class="mr-1">Date Of Sale: </label> <b class="text-primary mr-4">{{ auctionDate }}</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label class="mr-1">Sale Name: </label> <b class="text-success">{{ auctionName }}</b>
+    </div>
+</div>
+<mat-dialog-content class="mat-typography" id="tables">
+    <div id="ml-rating-table">
+        <h3 class="text-center mt-2 text-primary">Sort by ML Rating </h3>
+        <app-ml-rating-table></app-ml-rating-table>
+    </div>
+    <div id="mtDNAHap-table">
+        <h3 class="text-center mt-2 text-primary">Sort by mtDNAHap </h3>
+        <app-mtDNAHap-table></app-mtDNAHap-table>
+    </div>
+    <div id="sire-table">
+        <h3 class="text-center mt-2 text-primary">Sort by Sire </h3>
+        <app-sire-table></app-sire-table>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-raised-button color="primary" [mat-dialog-close]="true" (click)="onPDFDownload()"><mat-icon>download</mat-icon> Export To PDF</button>
+    <button mat-raised-button mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

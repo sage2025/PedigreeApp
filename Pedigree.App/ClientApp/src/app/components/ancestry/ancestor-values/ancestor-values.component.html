@@ -1,0 +1,69 @@
+<div class="tab-view">
+    <div class="mat-elevation-z8">
+        <div class="loading-overlay" *ngIf="loadingData">
+            <mat-spinner *ngIf="loadingData"></mat-spinner>
+        </div>
+        <h5 class="text-center pt-1">Horses Count: {{summary.horsesCount}}, Ancestors Count: {{summary.ancestorsCount}}, Genome Percent: {{summary.genomePercent ? summary.genomePercent.toFixed(4) : ''}}</h5>
+        <div class="horselist-table-container">
+            <table mat-table [dataSource]="dataSource" class="horselist-table" matSort matSortActive="avgMC" matSortDisableClear matSortDirection="desc">
+                <!-- Go to pedigree link -->
+                <ng-container matColumnDef="pedigree">
+                    <th mat-header-cell *matHeaderCellDef style="width:100px;"><b>Pedigree</b></th>
+                    <td mat-cell *matCellDef="let row">
+                        <a mat-icon-button matTooltip="Heirarchy" target="_blank" [routerLink]="['/charts/ancestry/' + row.id]">
+                            <mat-icon color="primary">account_tree</mat-icon>
+                        </a>
+                    </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width:150px;"><b>Name</b></th>
+                    <td mat-cell *matCellDef="let row">
+                        <span>{{row.name}}</span>
+                    </td>
+                </ng-container>
+
+                <!-- Sex Column -->
+                <ng-container matColumnDef="sex">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Sex</b></th>
+                    <td mat-cell *matCellDef="let row">{{row.sex}}</td>
+                </ng-container>
+
+                <!-- Yob Column -->
+                <ng-container matColumnDef="age">
+                    <th mat-header-cell *matHeaderCellDef><b>YOB</b></th>
+                    <td mat-cell *matCellDef="let row">{{row.age}}</td>
+                </ng-container>
+
+                <!-- Country Column -->
+                <ng-container matColumnDef="country">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Country</b></th>
+                    <td mat-cell *matCellDef="let row">{{row.country}}</td>
+                </ng-container>
+
+                <!-- HaploGroup Column -->
+                <ng-container matColumnDef="mtDNATitle">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>MtDNA</b></th>                  
+                    <td mat-cell *matCellDef="let row">
+                        <span [ngStyle]="{'background-color': row.mtDNAColor}" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>&nbsp;{{row.mtDNATitle}}</span>
+                    </td>
+                </ng-container>
+
+                <!-- Average Marginal Contribution Column -->
+                <ng-container matColumnDef="avgMC">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Avg MC</b></th>
+                    <td mat-cell *matCellDef="let row">
+                        {{row.avgMC.toFixed(3)}}
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            </table>
+
+            <div class="p-5 text-center text-danger" *ngIf="dataSource.data.length === 0">No Results to show at the moment.</div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,64 @@
+<div class="tab-view">
+    <div class="loading-overlay" *ngIf="loadingData">
+        <mat-spinner *ngIf="loadingData"></mat-spinner>
+    </div>
+    <div class="row m-2">
+        <div class="col" *ngFor="let group of haploGroupsData">
+            <mat-card class="m-3" style="width:320px;">
+                <mat-card-subtitle>
+                    Haplo Group: <strong>{{group.title}}</strong>
+                </mat-card-subtitle>
+                <mat-card-content class="p-3">
+                    <div>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Color</mat-label>
+                            <mat-select (selectionChange)="changeGroupColor(group, $event)" [(value)]="group.color">
+                                <mat-option>None</mat-option>
+                                <mat-option *ngFor="let color of groupColors" [value]="color.value"
+                                    [ngStyle]="{'background-color': color.value, 'color': color.textColor}">
+                                    {{color.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <span class="haplogroup-color-display"
+                            [ngStyle]="{'background-color': group.color}">&nbsp;</span>
+                    </div>
+                    <div>
+                        <mat-divider></mat-divider>
+                        <div class="row pt-3">
+                            <label class="my-auto">Haplo Types</label>
+                            <button mat-button (click)="openAddHaploType(group)">
+                                <mat-icon>add</mat-icon>
+                            </button>
+                        </div>
+
+                        <table mat-table [dataSource]="typeDataSource(group)" class="mt-3">
+                            <ng-container matColumnDef="no">
+                                <th mat-header-cell *matHeaderCellDef> No </th>
+                                <td mat-cell *matCellDef="let i = index" style="width: 50px;"> {{i + 1}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="name">
+                                <th mat-header-cell *matHeaderCellDef> Name </th>
+                                <td mat-cell *matCellDef="let item"> {{item.name}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="population">
+                                <th mat-header-cell *matHeaderCellDef> Population </th>
+                                <td mat-cell *matCellDef="let item"> {{item.populationPercent}}% </td>
+                            </ng-container>
+                            <ng-container matColumnDef="action">
+                                <th mat-header-cell *matHeaderCellDef> </th>
+                                <td mat-cell *matCellDef="let item" style="width: 50px;">
+                                    <button mat-icon-button type="button" (click)="removeHaploType(group, item)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-row *matRowDef="let row; columns: haploTypeColumns;"></tr>
+                        </table>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>

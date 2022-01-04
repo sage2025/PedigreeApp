@@ -1,0 +1,75 @@
+<div class="tab-view">
+    <div class="mat-elevation-z8">
+        <div class="loading-overlay" *ngIf="loadingData || isRateLimitReached">
+            <mat-spinner *ngIf="loadingData"></mat-spinner>
+        </div>
+        <div>
+            <table mat-table [dataSource]="dataSource" matSort matSortActive="name" matSortDisableClear matSortDirection="asc">
+
+                <ng-container matColumnDef="group">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>HaploGroup</b></th>
+                    <td mat-cell *matCellDef="let row">
+                        <span [ngStyle]="{'background-color': row.color}" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>&nbsp;{{row.title}}</span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="ref_pop_count">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Ref Pop Count</b></th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="row.refPopCount > 0 && 'text-danger'">{{row.refPopCount}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="ref_pop_count_percent">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Ref Pop Count(%)</b></th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="row.refPopCountPercent > 0 && 'text-danger'">{{row.refPopCountPercent}}%</td>
+                </ng-container>
+
+                <ng-container matColumnDef="rated_horses">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Rated Horses</b></th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="row.ratedHorses > 0 && 'text-danger'">{{row.ratedHorses}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="rated_horses_percent">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Rated Horses(%)</b></th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="row.ratedHorsesPercent > 0 && 'text-danger'">{{row.ratedHorsesPercent}}%</td>
+                </ng-container>
+
+                <ng-container matColumnDef="three_plus_stars">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>3+ Starts</b></th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="row.threePlusStarts > 0 && 'text-danger'">{{row.threePlusStarts}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="three_plus_stars_percent">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>3+ Starts(%)</b></th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="row.threePlusStartsPercent > 0 && 'text-danger'">{{row.threePlusStartsPercent}}%</td>
+                </ng-container>
+
+                <ng-container matColumnDef="elite">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Elite</b></th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="row.elite > 0 && 'text-danger'">{{row.elite}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="elite_percent">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Elite(%)</b></th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="row.elitePercent > 0 && 'text-danger'">{{row.elitePercent}}%</td>
+                </ng-container>
+
+                <ng-container matColumnDef="non_elite">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Non Elite</b></th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="row.nonElite > 0 && 'text-danger'">{{row.nonElite}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="non_elite_percent">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Non Elite(%)</b></th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="row.nonElitePercent > 0 && 'text-danger'">{{row.nonElitePercent}}%</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            </table>
+
+            <div class="p-5 text-center text-danger" *ngIf="resultsLength === 0">No Results to show at the moment.</div>
+        </div>
+    </div>
+</div>

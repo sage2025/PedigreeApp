@@ -1,0 +1,9 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>
+            Edit Race
+            <button class="m-2 float-right" mat-icon-button matTooltip="View Result" (click)="onView(raceId)" color="secondary"><mat-icon>format_list_numbered</mat-icon></button>
+        </mat-card-title>
+    </mat-card-header>
+    <app-race-form [raceId]="raceId"></app-race-form>
+</mat-card>

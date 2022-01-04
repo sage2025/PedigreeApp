@@ -1,0 +1,174 @@
+<div class="page-view">
+    <div class="loading-overlay" *ngIf="isTraining || isDeploying || isEvaluating || isRetraining">
+        <mat-spinner></mat-spinner>
+    </div>
+    <div *ngIf="!isNewTraining">
+        <div>
+            <table class="table table-bordered table-responsive">
+                <thead>
+                    <tr>
+                        <th scope="col" style="width:10%;">Label</th>
+                        <th scope="col" style="width:90%;">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">Horses</th>
+                        <td>{{lastModel != null ? lastModel.horsesCount : ''}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Model Name</th>
+                        <td>{{lastModel != null ? lastModel.modelName : ''}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">RMS Error</th>
+                        <td>{{lastModel != null ? lastModel.rmsError : ''}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">RSquared</th>
+                        <td>{{lastModel != null ? lastModel.rSquared : ''}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Features</th>
+                        <td>{{lastModel != null ? lastModel.features : ''}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Model Version</th>
+                        <td>{{lastModel != null ? lastModel.modelVersion : ''}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Model Date</th>
+                        <td>{{lastModel != null ? (lastModel.createdAt | date: 'yyyy-MM-dd') : ''}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-3">
+            <form [formGroup]="currentEvaluateForm" (ngSubmit)="onEvaluateCurrentModel()"
+                *ngIf="currentEvaluateForm != null">
+                <mat-grid-list cols="5" rowHeight="40px">
+                    <mat-grid-tile rowspan="2" *ngFor="let column of currentModelFeatureColumns()">
+                        <mat-form-field class="w-100 mr-2">
+                            <input matInput type="text" formControlName="{{column}}" placeholder="{{column}}" />
+                        </mat-form-field>
+                    </mat-grid-tile>
+                </mat-grid-list>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <button mat-raised-button color="primary">Evaluate</button>
+                        <span class="ml-2"><b>{{currentEvaluatedValue}}</b></span>
+                    </div>
+
+                    <div class="col-sm-6 text-right">
+                        <button mat-stroked-button color="primary" (click)="gotoNewTrain()">New Train</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div>
+        <mat-horizontal-stepper linear labelPosition="bottom" #stepper *ngIf="isNewTraining">
+            <mat-step [completed]="completed[0]">
+                <ng-template matStepLabel>Select Columns</ng-template>
+                <div>
+                    <mat-card>
+                        <div *ngFor="let category of categories">
+                            <mat-card-subtitle>
+                                <mat-checkbox color="primary" (change)="toggleCategoryAllCheck($event, category)">===
+                                    {{category}} ===</mat-checkbox>
+                            </mat-card-subtitle>
+                            <mat-card-content>
+                                <mat-grid-list cols="5" rowHeight="40px">
+                                    <mat-grid-tile *ngFor="let column of columnsInCategory(category); let i = index;">
+                                        <mat-checkbox class="w-100" [(ngModel)]="selectedColumns[column.name]">
+                                            {{column.name}}
+                                        </mat-checkbox>
+                                    </mat-grid-tile>
+                                </mat-grid-list>
+                            </mat-card-content>
+                        </div>
+                    </mat-card>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-sm-6">
+                        <button mat-stroked-button color="primary" (click)="cancelNewTrain()">Cancel</button>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <button mat-raised-button color="primary" (click)="onTrainModel()">Train Model</button>
+                    </div>
+                </div>
+            </mat-step>
+            <mat-step [completed]="completed[1]">
+                <ng-template matStepLabel>Train Result</ng-template>
+                <div>
+                    <table class="table table-bordered table-responsive">
+                        <thead>
+                            <tr>
+                                <th scope="col">Label</th>
+                                <th scope="col">Current</th>
+                                <th scope="col">Previous</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">Horses</th>
+                                <td>{{trainResult != null ? trainResult.horsesCount : ''}}</td>
+                                <td>{{lastModel != null ? lastModel.horsesCount : ''}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Best Model Name</th>
+                                <td>{{trainResult != null ? trainResult.modelName : ''}}</td>
+                                <td>{{lastModel != null ? lastModel.modelName : ''}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">RMS Error</th>
+                                <td>{{trainResult != null ? trainResult.rmsError : ''}}</td>
+                                <td>{{lastModel != null ? lastModel.rmsError : ''}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">RSquared</th>
+                                <td>{{trainResult != null ? trainResult.rSquared : ''}}</td>
+                                <td>{{lastModel != null ? lastModel.rSquared : ''}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Features</th>
+                                <td>{{trainResult != null ? trainResult.features : ''}}</td>
+                                <td>{{lastModel != null ? lastModel.features : ''}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-right mt-3">
+                    <button mat-stroked-button color="primary" (click)="onDiscardModel()">Discard Model</button>
+                    <button mat-raised-button class="ml-3" color="primary" (click)="gotoEvaluate()">Evaluate</button>
+                </div>
+            </mat-step>
+            <mat-step [completed]="completed[2]">
+                <ng-template matStepLabel>Evaluation</ng-template>
+                <div *ngIf="newEvaluateForm != null">
+                    <form [formGroup]="newEvaluateForm" (ngSubmit)="onEvaluateNewModel()">
+                        <mat-grid-list cols="5" rowHeight="40px">
+                            <mat-grid-tile rowspan="2" *ngFor="let column of newModelFeatureColumns()">
+                                <mat-form-field class="w-100 mr-2">
+                                    <input matInput type="text" formControlName="{{column}}" placeholder="{{column}}" />
+                                </mat-form-field>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <button mat-raised-button>Evaluate</button>
+                                <span class="ml-2"><b>{{newEvaluatedValue}}</b></span>
+                            </div>
+                            <div class="col-sm-6 text-right">
+                                <button mat-stroked-button color="primary" (click)="onDiscardModel()">Discard Model</button>
+                                <button mat-raised-button class="ml-3" color="primary" (click)="onDeployModel()"
+                                    [disabled]="newEvaluatedValue == null">Deploy Model</button>
+                            </div>
+                        </div>                        
+                    </form>
+                </div>
+            </mat-step>
+        </mat-horizontal-stepper>
+    </div>
+</div>

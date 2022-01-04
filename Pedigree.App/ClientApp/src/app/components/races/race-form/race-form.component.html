@@ -1,0 +1,78 @@
+<mat-card-content>
+    <div class="tlist-loading-shade" *ngIf="loading">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <div>
+        <form [formGroup]="raceForm" (ngSubmit)="onRaceSubmit()">
+            <mat-grid-list cols="2" rowHeight="40px">
+                <mat-grid-tile rowspan="2">
+                    <mat-form-field class="w-100" floatLabel="Name" appearance="fill">
+                        <mat-label>Name</mat-label>
+                        <input matInput type="text" formControlName="name" placeholder="Name" required />
+                    </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile rowspan="2">
+                    <mat-form-field class="w-100 p-2" appearance="fill">
+                        <mat-label>Date</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="date" required>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile rowspan="2">
+                  <mat-form-field class="w-100 p-2" floatLabel="Country" appearance="fill">
+                    <mat-label>Country</mat-label>
+                    <mat-select placeholder="Country" formControlName="country" required>
+                        <mat-option *ngFor="let c of countries" [value]="c">{{c}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile rowspan="2">
+                  <mat-form-field class="w-100 p-2" floatLabel="Distance" appearance="fill">
+                    <mat-label>Distance</mat-label>
+                    <mat-select placeholder="Distance" formControlName="distance" required>
+                        <mat-option *ngFor="let d of distances" [value]="d.value">{{d.label}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile rowspan="2">
+                  <mat-form-field class="w-100 p-2" floatLabel="Surface" appearance="fill">
+                    <mat-label>Surface</mat-label>
+                    <mat-select placeholder="Surface" formControlName="surface" required>
+                        <mat-option *ngFor="let s of surfaces" [value]="s">{{s}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile rowspan="2">
+                  <mat-form-field class="w-100 p-2" floatLabel="Type" appearance="fill">
+                    <mat-label>Type</mat-label>
+                    <mat-select placeholder="Type" formControlName="type" required>
+                        <mat-option *ngFor="let t of types" [value]="t">{{t}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile rowspan="2">
+                  <mat-form-field class="w-100 p-2" floatLabel="Status" appearance="fill">
+                    <mat-label>Status</mat-label>
+                    <mat-select placeholder="Status" formControlName="status" required>
+                        <mat-option *ngFor="let s of statuses" [value]="s">{{s}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </mat-grid-tile>
+
+            </mat-grid-list>
+
+            <div class="text-right">
+                <button mat-raised-button [disabled]="loading || submitting" color="primary">Save</button>
+                <a class="ml-2" mat-raised-button [disabled]="loading || submitting" [routerLink]="['/races']" color="secondary">Close</a>
+            </div>
+        </form>
+    </div>
+</mat-card-content>

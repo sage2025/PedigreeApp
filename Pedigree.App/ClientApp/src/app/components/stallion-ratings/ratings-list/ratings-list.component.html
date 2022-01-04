@@ -1,0 +1,79 @@
+<div class="mt-4">
+  <div class="row mx-2">
+    <div class="col-sm-4">
+      <mat-form-field style="width:60%">
+        <input matInput [(ngModel)]="searchQuery" placeholder="Search by Name contains...">
+      </mat-form-field>
+      <button mat-mini-fab (click)="searchItems()" color="primary" class="ml-2">
+        <mat-icon>search</mat-icon>
+      </button>
+      <button *ngIf="showSearchClear" class="ml-2" mat-mini-fab (click)="clearSearchBox()" color="accent">
+        <mat-icon>clear</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div class="loading-overlay" *ngIf="isLoadingData">
+    <mat-spinner *ngIf="isLoadingData"></mat-spinner>
+  </div>
+  <div>
+    <table mat-table [dataSource]="data" matSort matSortActive="rating" matSortDisableClear matSortDirection="desc">
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef class="horse-column-name" mat-sort-header><b>Stallion Name</b></th>
+        <td mat-cell *matCellDef="let row">
+          <span>{{row.horseName}}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="age">
+        <th mat-header-cell *matHeaderCellDef class="horse-column-yob" mat-sort-header><b>Crop Age</b></th>
+        <td mat-cell *matCellDef="let row">
+          <span>{{row.cropAge}}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="sCount" *ngIf="showSireCount()">
+        <th mat-header-cell *matHeaderCellDef class="column-numeric" mat-sort-header><b>Sire Count</b></th>
+        <td mat-cell *matCellDef="let row" [ngClass]="row.sCount > 0 ? 'text-danger' : ''">{{row.sCount}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="rCount">
+        <th mat-header-cell *matHeaderCellDef class="column-numeric" mat-sort-header><b>Runners Count</b></th>
+        <td mat-cell *matCellDef="let row" [ngClass]="row.rCount > 0 ? 'text-danger' : ''">{{row.rCount}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="zCount">
+        <th mat-header-cell *matHeaderCellDef class="column-numeric" mat-sort-header><b>3+ Runs</b></th>
+        <td mat-cell *matCellDef="let row" [ngClass]="row.zCount > 0 ? 'text-danger' : ''">{{row.zCount}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="rating">
+        <th mat-header-cell *matHeaderCellDef class="column-numeric" mat-sort-header><b>Stallion Rating</b></th>
+        <td mat-cell *matCellDef="let row">{{row.rating > 0 ? row.rating.toFixed(5) : 0}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="iv" *ngIf="dataType=='current-sr' || dataType=='historical-sr'">
+        <th mat-header-cell *matHeaderCellDef class="column-numeric" mat-sort-header><b>IV</b></th>
+        <td mat-cell *matCellDef="let row">{{row.iv > 0 ? row.iv.toFixed(5) : 0}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="ae" *ngIf="dataType=='current-sr' || dataType=='historical-sr'">
+        <th mat-header-cell *matHeaderCellDef class="column-numeric" mat-sort-header><b>A/E</b></th>
+        <td mat-cell *matCellDef="let row">{{row.ae > 0 ? row.ae.toFixed(5) : 0}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="prb2" *ngIf="dataType=='current-sr' || dataType=='historical-sr'">
+        <th mat-header-cell *matHeaderCellDef class="column-numeric" mat-sort-header><b>PRB^2</b></th>
+        <td mat-cell *matCellDef="let row">{{row.prB2 > 0 ? row.prB2.toFixed(5) : 0}}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+
+    <div class="p-5 text-center text-danger" *ngIf="resultsLength === 0">No Results to show at the moment.</div>
+  </div>
+
+  <mat-paginator [length]="resultsLength" [pageSize]="100" showFirstLastButtons></mat-paginator>
+</div>

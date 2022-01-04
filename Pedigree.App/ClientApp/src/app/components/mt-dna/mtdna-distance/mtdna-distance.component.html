@@ -1,0 +1,55 @@
+<div class="tab-view">
+    <div class="mat-elevation-z8">
+        <div class="loading-overlay" *ngIf="loadingData || isRateLimitReached">
+            <mat-spinner *ngIf="loadingData"></mat-spinner>
+        </div>
+        <div>
+            <table mat-table [dataSource]="dataSource" matSort matSortActive="name" matSortDisableClear matSortDirection="asc">
+
+                <ng-container matColumnDef="group">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>HaploGroup</b></th>
+                    <td mat-cell *matCellDef="let row">
+                        <span [ngStyle]="{'background-color': row.color}" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>&nbsp;{{row.title}}</span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="first_place_count">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>1st Place SW</b></th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="row.firstPlaceCount > 0 && 'text-danger'">{{row.firstPlaceCount}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="sprint_percent">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Sprint</b></th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="row.sprintPercent > 0 && 'text-danger'">{{row.sprintPercent.toFixed(0)}}%</td>
+                </ng-container>
+
+                <ng-container matColumnDef="sprinter_miler_percent">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Sprinter/Miler</b></th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="row.sprinterMilerPercent > 0 && 'text-danger'">{{row.sprinterMilerPercent.toFixed(0)}}%</td>
+                </ng-container>
+
+                <ng-container matColumnDef="intermediate_percent">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Intermediate</b></th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="row.intermediatePercent > 0 && 'text-danger'">{{row.intermediatePercent.toFixed(0)}}%</td>
+                </ng-container>
+
+                <ng-container matColumnDef="long_percent">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Long</b></th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="row.longPercent > 0 && 'text-danger'">{{row.longPercent.toFixed(0)}}%</td>
+                </ng-container>
+
+                <ng-container matColumnDef="extended_percent">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Extended</b></th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="row.extendedPercent > 0 && 'text-danger'">{{row.extendedPercent.toFixed(0)}}%</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            </table>
+
+            <div class="p-5 text-center text-danger" *ngIf="resultsLength === 0">No Results to show at the moment.</div>
+        </div>
+    </div>
+</div>

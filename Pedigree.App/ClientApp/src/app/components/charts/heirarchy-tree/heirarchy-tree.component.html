@@ -1,0 +1,38 @@
+  <div class="centered">
+    <div>
+      <h3>Heirarchy View</h3>
+    </div>
+    <div class="page-loading-shade"
+         *ngIf="isLoadingResults || isRateLimitReached">
+      <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+    <div class="col-md-2" style="float:right">
+      <div class="col-md-6 legend-male">Male</div>
+      <div class="col-md-6 legend-female">Female</div>
+    </div>
+    <ul class="orgchart">
+      <li class="root">
+        <div class="nodecontent" [matTooltip]="showTooltip(rootElement)">
+          <a [routerLink]="['/horses/'+rootElement.id]" target="_blank">{{rootElement.name}}<i class="material-icons">launch</i></a>
+        </div>
+        <ul>
+          <ng-template #recursiveList let-list>
+            <li *ngFor="let item of list" [ngClass]="{'leaf': item.isLeaf}">
+              <div [ngClass]="item.sex == 'Male'? 'nodecontentblue nodecontent' :'nodecontentpink nodecontent'" [matTooltip]="showTooltip(item)">
+                <a [routerLink]="['/horses/'+item.id]" target="_blank">{{item.name}}<i class="material-icons">launch</i></a>
+              </div>
+              <ul *ngIf="item.children.length > 0">
+                <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: item.children }"></ng-container>
+              </ul>
+            </li>
+          </ng-template>
+          <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: list }"></ng-container>
+          <li *ngIf="list.length < 1" class="leaf">
+            <div class="nodecontent">
+              No heirarchy yet!
+            </div>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>

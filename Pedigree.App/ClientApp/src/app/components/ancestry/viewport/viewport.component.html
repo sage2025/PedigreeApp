@@ -1,0 +1,10 @@
+<div class="centered page-view">
+  <mat-tab-group [selectedIndex]="activeTab" (selectedTabChange)="onTabChanged($event)">
+    <mat-tab label="Ancestor Values">
+      <app-ancestry-ancestor-values></app-ancestry-ancestor-values>
+    </mat-tab>
+    <mat-tab label="Population Values">
+      <app-ancestry-population-values [selected]="activeTab == 1"></app-ancestry-population-values>
+    </mat-tab>
+  </mat-tab-group>
+</div>

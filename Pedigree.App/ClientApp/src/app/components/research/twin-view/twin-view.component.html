@@ -1,0 +1,83 @@
+<div class="tab-view">
+    <div class="mat-elevation-z8">
+
+        <div class="loading-overlay" *ngIf="loadingData || isRateLimitReached">
+            <mat-spinner *ngIf="loadingData"></mat-spinner>
+        </div>
+        <div class="horselist-table-container">
+            <table mat-table [dataSource]="dataSource" class="horselist-table" matSort matSortActive="name"
+                matSortDisableClear matSortDirection="asc">
+
+                <ng-container matColumnDef="no">
+                    <th mat-header-cell *matHeaderCellDef class="horse-column-no"> No </th>
+                    <td mat-cell *matCellDef="let i = index"> {{i + 1 + paginator.pageSize * paginator.pageIndex}} </td>
+                </ng-container>
+
+                <!-- Go to pedigree link -->
+                <ng-container matColumnDef="pedigree">
+                    <th mat-header-cell *matHeaderCellDef class="horse-column-pedigree"><b>Pedigree</b></th>
+                    <td mat-cell *matCellDef="let row">
+                        <a mat-icon-button matTooltip="Heirarchy" [routerLink]="['/charts/ancestry/' + row.id]">
+                            <mat-icon color="primary">account_tree</mat-icon>
+                        </a>
+                    </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="horse-column-name"><b>Name</b></th>
+                    <td mat-cell *matCellDef="let row">
+                        <span>{{row.name}}</span>
+                    </td>
+                </ng-container>
+
+                <!-- Yob Column -->
+                <ng-container matColumnDef="age">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="horse-column-yob"><b>YOB</b></th>
+                    <td mat-cell *matCellDef="let row">{{row.age}}</td>
+                </ng-container>
+
+                <!-- Country Column -->
+                <ng-container matColumnDef="country">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="horse-column-country"><b>Country</b></th>
+                    <td mat-cell *matCellDef="let row">{{row.country}}</td>
+                </ng-container>
+
+                <!-- Father/Sire Column -->
+                <ng-container matColumnDef="fatherName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="horse-column-name"><b>Sire</b></th>
+                    <td mat-cell *matCellDef="let row">
+                        {{row.fatherName ? row.fatherName : "(No Parent Attached)"}}
+                    </td>
+                </ng-container>
+
+                <!-- Mother/Dam Column -->
+                <ng-container matColumnDef="motherName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="horse-column-name"><b>Dam</b></th>
+                    <td mat-cell *matCellDef="let row">
+                        {{row.motherName ? row.motherName : "(No Parent Attached)"}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="twinYear">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="horse-column-yob"><b>Foal YOB</b></th>
+                    <td mat-cell *matCellDef="let row">{{row.twinYear}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="twins">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Twins</b></th>
+                    <td mat-cell *matCellDef="let row">{{row.twins}}</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            </table>
+
+            <div class="p-5 text-center text-danger" *ngIf="dataSource.data.length === 0">No Results to show at the moment.</div>
+        </div>
+
+        <mat-paginator [length]="dataSource.data.length" [pageSize]="100" showFirstLastButtons></mat-paginator>
+    </div>
+</div>

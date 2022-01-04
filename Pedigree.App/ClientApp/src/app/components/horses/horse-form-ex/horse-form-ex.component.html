@@ -1,0 +1,82 @@
+<h3 *ngIf="isSelecting">Select a horse</h3>
+<h3 *ngIf="isEditing">Edit horse</h3>
+
+<div class="loading-overlay" *ngIf="isSaving">
+    <mat-spinner></mat-spinner>
+</div>
+
+<div *ngIf="isSelecting">
+    <mat-selection-list #selectionList [multiple]="false">
+        <mat-list-option *ngFor="let horse of horses" [value]="horse">
+            <b>{{horse.name}}</b>({{horse.sex}}-{{horse.age}}-{{horse.country}} by {{horse.fatherName}} and
+            {{horse.motherName}})
+        </mat-list-option>
+    </mat-selection-list>
+    <div class="text-right">
+        <button mat-raised-button (click)="onSelect()" color="primary">SELECT</button>
+        <button class="ml-2" mat-raised-button (click)="onEdit()" color="primary">EDIT</button>
+    </div>
+</div>
+
+<div *ngIf="isEditing">
+    <form [formGroup]="horseForm" (ngSubmit)="onHorseSubmit()">
+        <mat-grid-list cols="4" rowHeight="40px">
+
+            <mat-grid-tile rowspan="2" colspan="4" *ngIf="errorMessage">
+                <div>{{errorMessage}}</div>
+            </mat-grid-tile>
+
+            <mat-grid-tile rowspan="2" colspan="3">
+                <mat-form-field class="w-100 p-2" floatLabel="Name">
+                    <input matInput type="text" formControlName="name" placeholder="Name" required />
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile rowspan="2" colspan="1">
+                <mat-form-field class="w-100 p-2" floatLabel="YOB">
+                    <mat-select placeholder="YOB" formControlName="age" required>
+                        <mat-option *ngFor="let y of yearArray" [value]="y">{{y}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile rowspan="2" colspan="2">
+                <mat-form-field class="w-100 p-2" floatLabel="Sex">
+                    <mat-select placeholder="Sex" formControlName="sex" required>
+                        <mat-option value="Male">Male</mat-option>
+                        <mat-option value="Female">Female</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile rowspan="2" colspan="2">
+                <mat-form-field class="w-100 p-2" floatLabel="Country">
+                    <input matInput type="text" formControlName="country" placeholder="Country" />
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile rowspan="2" colspan="2">
+                <app-horse-search class="w-100 p-2" label="Sire" sex="Male" [(value)]="sire" (valueChange)="selectParent($event, 'Father')"></app-horse-search>
+            </mat-grid-tile>
+
+            <mat-grid-tile rowspan="2" colspan="2">
+                <app-horse-search class="w-100 p-2" label="Dam" sex="Female" [(value)]="dam" (valueChange)="selectParent($event, 'Mother')"></app-horse-search>
+            </mat-grid-tile>
+
+            <mat-grid-tile rowspan="1" colspan="2">
+                <p class="text-danger w-100 p-2 small" *ngIf="sireWarning">{{sireWarning}}</p>
+            </mat-grid-tile>
+
+            <mat-grid-tile rowspan="1" colspan="2">
+                <p class="text-danger w-100 p-2 small" *ngIf="damWarning">{{damWarning}}</p>
+            </mat-grid-tile>
+
+        </mat-grid-list>
+
+        <div class="row">
+            <div class="col-md-12 text-right">
+                <button mat-raised-button color="primary">Save</button>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,18 @@
+<div class="tab-view">
+  <div class="centered page-view">
+    <mat-tab-group [selectedIndex]="activeTab" (selectedTabChange)="onTabChanged($event)">
+      <mat-tab label="Sales Admin">
+        <app-sales-admin></app-sales-admin>
+      </mat-tab>
+      <mat-tab label="10 Generations">
+        <app-ten-generations></app-ten-generations>
+      </mat-tab>
+      <mat-tab label="Twin">
+        <app-twin-view></app-twin-view>
+      </mat-tab>  
+      <mat-tab label="Parent Age">
+        <app-research-grandparents></app-research-grandparents>
+      </mat-tab>    
+    </mat-tab-group>
+  </div>
+</div>

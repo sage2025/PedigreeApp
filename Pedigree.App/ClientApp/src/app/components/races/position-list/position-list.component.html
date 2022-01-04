@@ -1,0 +1,92 @@
+<div class="mat-elevation-z8 page-view">
+    <div class="loading-overlay" *ngIf="loading">
+        <mat-spinner></mat-spinner>
+    </div>
+    <h4 class="text-center pt-2" *ngIf="race">{{race.name}}</h4>
+    <p class="text-center" *ngIf="race">({{race.date | date:'yyyy-MM-dd'}}; {{race.country}}; {{race.distance}}; {{race.surface}}; {{race.type}}; {{race.status}})</p>
+    <div class="row">
+        <div class="col-sm-6 mt-2">
+            <mat-form-field class="ml-2" style="width:250px">
+                <input matInput [(ngModel)]="searchQuery" placeholder="Search by Name contains...">
+            </mat-form-field>
+            <button mat-mini-fab (click)="searchItems()" color="primary" class="ml-1">
+                <mat-icon>search</mat-icon>
+            </button>
+            <button *ngIf="showSearchClear" class="ml-2" mat-mini-fab (click)="clearSearchBox()" color="accent">
+                <mat-icon>clear</mat-icon>
+            </button>
+        </div>    
+        <div class="col-sm-6 text-right">
+            <app-position-form [race]="race" (submitted)="update($event)"></app-position-form>
+        </div>
+    </div>
+    <table mat-table [dataSource]="positionData">
+
+        <ng-container matColumnDef="pedigree">
+            <th mat-header-cell *matHeaderCellDef style="width: 90px;"></th>
+            <td mat-cell *matCellDef="let row">
+                <a mat-icon-button matTooltip="Pedigree" target="_blank" [routerLink]="['/charts/ancestry/' + row.horseId]">
+                    <mat-icon color="primary">account_tree</mat-icon>
+                </a>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="place">
+            <th mat-header-cell *matHeaderCellDef style="width: 100px;"> Place </th>
+            <td mat-cell *matCellDef="let row"> {{row.place}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef style="width: 150px;"> Horse </th>
+            <td mat-cell *matCellDef="let row"> {{row.horseName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="sex">
+            <th mat-header-cell *matHeaderCellDef> Sex </th>
+            <td mat-cell *matCellDef="let row"> {{row.horseSex}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="age">
+            <th mat-header-cell *matHeaderCellDef> YOB </th>
+            <td mat-cell *matCellDef="let row"> {{row.horseAge}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="father">
+            <th mat-header-cell *matHeaderCellDef> Sire </th>
+            <td mat-cell *matCellDef="let row" [style.color]="row.horseFather"> {{row.horseFather}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="mother">
+            <th mat-header-cell *matHeaderCellDef> Dam </th>
+            <td mat-cell *matCellDef="let row" [style.color]="row.horseMother"> {{row.horseMother}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td class="text-right" mat-cell *matCellDef="let row">
+                <button mat-icon-button matTooltip="Edit Position" [satPopoverAnchorFor]="popover" (click)="popover.open()">
+                    <mat-icon>rate_review</mat-icon>
+                </button>
+                <button mat-icon-button matTooltip="Delete Position" (click)="onDelete(row.id, row.horseName)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+
+                <sat-popover #popover
+                    hasBackdrop
+                    xAlign="start"
+                    yAlign="start">
+                  <app-position-form [race]="race" [position]="row"></app-position-form>
+                </sat-popover>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+        </tr>
+    </table>
+
+    <mat-paginator [length]="resultsLength" [pageSize]="[100]"></mat-paginator>
+</div>

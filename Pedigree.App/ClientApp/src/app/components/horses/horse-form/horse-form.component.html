@@ -1,0 +1,149 @@
+<mat-card-cotent>
+  <div class="tlist-loading-shade"
+       *ngIf="isLoadingResults || isRateLimitReached">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+  <!-- Horse data tile-->
+  <div class="row mt-3">
+    <div [ngClass]="horseId > 0 ? 'col-md-6' : 'col-md-12'">
+      <form [formGroup]="horseForm" (ngSubmit)="onHorseSubmit()">
+        <mat-grid-list cols="4" rowHeight="40px">
+          <mat-grid-tile rowspan="2" colspan="4">
+            <mat-form-field class="w-100" floatLabel="Name">
+              <input matInput type="text" formControlName="name" placeholder="Name" required />
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile rowspan="2" colspan="2">
+            <mat-form-field class="w-100" floatLabel="YOB">
+              <mat-select placeholder="YOB" formControlName="age" required>
+                <mat-option *ngFor="let y of yearArray" [value]="y">{{y}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-grid-tile>
+
+          <mat-grid-tile rowspan="2" colspan="2">
+            <mat-form-field class="w-100 p-2" floatLabel="Sex">
+              <mat-select placeholder="Sex" formControlName="sex" required>
+                <mat-option value="Male">Male</mat-option>
+                <mat-option value="Female">Female</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-grid-tile>
+
+          <mat-grid-tile rowspan="2" colspan="2">
+            <mat-form-field class="w-100 p-2" floatLabel="Country">
+              <input matInput type="text" formControlName="country" placeholder="Country" />
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile rowspan="2" colspan="1">
+            <mat-form-field class="w-100 p-2" floatLabel="Family">
+              <input matInput readonly type="text" placeholder="Family" formControlName="family" />
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile rowspan="2" colspan="1">
+            <mat-form-field class="w-100 p-2" floatLabel="MtDNA">
+              <input matInput readonly type="text" placeholder="MtDNA" formControlName="mtDNATitle" />
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile rowspan="2" colspan="2">
+            <mat-form-field class="w-100 p-2" floatLabel="Sire">
+              <mat-label>Sire</mat-label>
+              <input matInput type="text" [formControl]="searchSiresCtrl" [matAutocomplete]="sireSelect">
+              <mat-autocomplete #sireSelect="matAutocomplete" [displayWith]="displayHorse">
+                <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option>
+                <ng-container *ngIf="!isLoading">
+                  <mat-option class="horse-option" *ngFor="let horse of filteredSires" [value]="horse" (onSelectionChange)="selectParent(horse, 'Father')">
+                    <span><b>{{horse.name}}</b> - {{horse.country}} - {{horse.age}}{{horse.family ? ' - ' + horse.family : ''}}<br /> &nbsp;by {{horse.fatherName ? horse.fatherName : '(no parent attached)'}}</span>
+                  </mat-option>
+                </ng-container>
+              </mat-autocomplete>
+            </mat-form-field>            
+            <button mat-icon-button class="form-field-action" type="button" (click)="removeParentalRelationship('Father')" *ngIf="havingSire()"><mat-icon>delete</mat-icon></button>
+            <button mat-icon-button class="form-field-action" type="button" (click)="reloadForThisHorse(searchSiresCtrl.value.id)" *ngIf="havingSire()"><mat-icon>launch</mat-icon></button>
+          </mat-grid-tile>
+          <mat-grid-tile rowspan="2" colspan="2">
+            <mat-form-field class="w-100 p-2" floatLabel="Dam">
+              <mat-label>Dam</mat-label>
+              <input matInput type="text" [formControl]="searchDamsCtrl" [matAutocomplete]="damSelect">
+              <mat-autocomplete #damSelect="matAutocomplete" [displayWith]="displayHorse">
+                <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option>
+                <ng-container *ngIf="!isLoading">
+                  <mat-option class="horse-option" *ngFor="let horse of filteredDams" [value]="horse" (onSelectionChange)="selectParent(horse, 'Mother')">
+                    <span><b>{{horse.name}}</b> - {{horse.country}} - {{horse.age}}{{horse.family ? ' - ' + horse.family : ''}}<br /> &nbsp;by {{horse.fatherName ? horse.fatherName : '(no parent attached)'}}</span>                    
+                  </mat-option>
+                </ng-container>
+              </mat-autocomplete>
+            </mat-form-field>           
+            <button mat-icon-button class="form-field-action" type="button" (click)="removeParentalRelationship('Mother')" *ngIf="havingDam()"><mat-icon>delete</mat-icon></button>
+            <button mat-icon-button class="form-field-action" type="button" (click)="reloadForThisHorse(searchDamsCtrl.value.id)" *ngIf="havingDam()"><mat-icon>launch</mat-icon></button>
+          </mat-grid-tile>
+          <!--To be used late if needed-->
+          <!--<mat-grid-tile rowspan="2">
+            <mat-form-field class="w-100 p-2" floatLabel="Active">
+              <mat-select placeholder="Active" formControlName="active">
+                <mat-option value="No">No</mat-option>
+                <mat-option value="Yes">Yes</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile rowspan="2">
+            <mat-form-field class="w-100 p-2" floatLabel="Elite">
+              <mat-select placeholder="Elite" formControlName="elite">
+                <mat-option value="No">No</mat-option>
+                <mat-option value="Yes">Yes</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-grid-tile>-->
+        </mat-grid-list>
+        <div class="row">
+          <div class="col-md-6">
+            <button mat-raised-button [disabled]="isLoadingResults" color="primary">Save</button>
+          </div>
+          <div class="col-md-6">
+            <a mat-raised-button [disabled]="isLoadingResults" [routerLink]="['/']" color="secondary">Close</a>
+          </div>
+        </div>
+      </form>
+
+      <!-- /Horse data tile-->
+      <!-- Relationhip data tile-->
+    </div>
+    <div class="col-md-6" *ngIf="showProgency">
+      <h5>Progeny</h5>
+      <table mat-table [dataSource]="currentHorse.children" class="mat-elevation-z8" *ngIf="currentHorse != null">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Name </th>
+          <td mat-cell *matCellDef="let item"> {{item.name}} <a mat-icon-button (click)="reloadForThisHorse(item.id)"><i class="material-icons">launch</i></a></td>
+        </ng-container>
+        <ng-container matColumnDef="age">
+          <th mat-header-cell *matHeaderCellDef> Age </th>
+          <td mat-cell *matCellDef="let item"> {{item.age}} </td>
+        </ng-container>
+        <ng-container matColumnDef="sex">
+          <th mat-header-cell *matHeaderCellDef> Sex </th>
+          <td mat-cell *matCellDef="let item"> {{item.sex}} </td>
+        </ng-container>
+        <ng-container matColumnDef="country">
+          <th mat-header-cell *matHeaderCellDef> Country </th>
+          <td mat-cell *matCellDef="let item"> {{item.country}} </td>
+        </ng-container>
+        <ng-container matColumnDef="family">
+          <th mat-header-cell *matHeaderCellDef> Family </th>
+          <td mat-cell *matCellDef="let item"> {{item.family}} </td>
+        </ng-container>
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef>  </th>
+          <td mat-cell *matCellDef="let item">
+            <button mat-icon-button type="button" (click)="removeChildRelationship(item.oId)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </div>
+  <!-- /Relationhip data tile-->
+</mat-card-cotent>

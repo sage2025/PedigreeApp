@@ -1,0 +1,211 @@
+<ng-template #bestRaceClassBubbleContent let-name="name" let-races="races">
+  <h5>{{name}}</h5>
+  <table class="table text-light">
+      <thead>
+        <tr>
+          <th scope="col">Place</th>
+          <th scope="col">Date</th>
+          <th scope="col">Race Name</th>
+          <th scope="col">Status</th>
+          <th scope="col">Surface</th>
+          <th scope="col">Distance</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let race of races">
+          <th scope="row">{{race.place}}</th>
+          <td>{{race.date | date: 'yyyy-MM-dd'}}</td>
+          <td>{{race.name}}</td>
+          <td>{{race.status}}</td>
+          <td>{{race.surface}}</td>
+          <td>{{race.distance}}</td>
+        </tr>
+      </tbody>
+    </table>
+</ng-template>
+
+<div class="page-view">
+  <div class="row">
+    <div class="col-sm-4">
+      <mat-form-field style="width:50%">
+        <!--<input matInput (keyup)="applyFilter($event.target.value)" [(ngModel)]="searchQuery" placeholder="Search by Name contains...">-->
+        <input matInput [(ngModel)]="searchQuery" placeholder="Search by Name contains...">
+      </mat-form-field>
+      <button mat-mini-fab (click)="searchItems()" color="primary">
+        <mat-icon>search</mat-icon>
+      </button>
+      <button *ngIf="showSearchClear" class="ml-2" mat-mini-fab (click)="clearSearchBox()" color="accent">
+        <mat-icon>clear</mat-icon>
+      </button>
+    </div>
+    <div class="col-sm-8">
+      <div class="row align-items-center h-100">
+        <div class="col-sm-2 mx-auto">
+          <div>Hypothetical:</div>
+        </div>
+        <div class="col-sm-4">
+          SIRE: &nbsp;<mat-form-field style="width:300px;">
+            <!--<input matInput (keyup)="applyFilter($event.target.value)" [(ngModel)]="searchQuery" placeholder="Search by Name contains...">-->
+            <input matInput [(ngModel)]="sireSearchQuery" (keyup)="onKeyupCheck()"
+              placeholder="Search by Name starts with...">
+          </mat-form-field>
+        </div>
+        <div class="col-sm-4">
+          DAM: &nbsp;<mat-form-field style="width:300px;">
+            <!--<input matInput (keyup)="applyFilter($event.target.value)" [(ngModel)]="searchQuery" placeholder="Search by Name contains...">-->
+            <input matInput [(ngModel)]="damSearchQuery" (keyup)="onKeyupCheck()"
+              placeholder="Search by Name starts with...">
+          </mat-form-field>
+        </div>
+        <div class="col-sm-2">
+          <button mat-mini-fab (click)="searchHypothetical()" [disabled]="enableHypotheticalSearch" color="primary">
+            <mat-icon>search</mat-icon>
+          </button>
+          <button *ngIf="showHypoSearchClear" class="ml-2" mat-mini-fab (click)="clearSearchBox()" color="accent">
+            <mat-icon>clear</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mat-elevation-z8">
+
+    <div class="loading-overlay" *ngIf="isLoadingResults || isRateLimitReached">
+      <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+    <div class="text-right">
+      <a mat-raised-button *ngIf="showGetPedigreeButton" color="accent" class="mr-1" [routerLink]="['/charts/hypothetical/mating']"
+        [queryParams]="{malehorseId: maleId, femalehorseId: femaleId}" target="_blank">Get Pedigree</a>
+      <button class="mr-1" mat-raised-button color="primary" (click)="onBulkAdd()">Bulk Add</button>
+      <button mat-raised-button color="primary" (click)="onAdd()">New Horse</button>
+    </div>
+    <div class="horselist-table-container">
+      <table mat-table [dataSource]="horseData" class="horselist-table" matSort matSortActive="age" matSortDisableClear
+        matSortDirection="desc">
+
+        <!-- Select checkbox Column -->
+        <ng-container matColumnDef="radio" *ngIf="isHypotheticalResultset">
+          <th mat-header-cell *matHeaderCellDef><b>Select</b></th>
+          <td mat-cell *matCellDef="let row">
+            <mat-checkbox (change)="rowSelected($event, row)"></mat-checkbox>
+          </td>
+        </ng-container>
+
+        <!-- Go to pedigree link -->
+        <ng-container matColumnDef="pedigree" *ngIf="!isHypotheticalResultset">
+          <th mat-header-cell *matHeaderCellDef><b>Pedigree</b></th>
+          <td mat-cell *matCellDef="let row">
+            <a mat-icon-button matTooltip="Heirarchy" target="_blank" [routerLink]="['/charts/ancestry/' + row.id]">
+              <mat-icon color="primary">account_tree</mat-icon>
+            </a>
+          </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Name</b></th>
+          <td mat-cell *matCellDef="let row">
+            <span>{{row.name}}</span>
+          </td>
+        </ng-container>
+
+        <!-- Sex Column -->
+        <ng-container matColumnDef="sex">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Sex</b></th>
+          <td mat-cell *matCellDef="let row">{{row.sex}}</td>
+        </ng-container>
+
+        <!-- Yob Column -->
+        <ng-container matColumnDef="age">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><b>YOB</b></th>
+          <td mat-cell *matCellDef="let row">{{row.age}}</td>
+        </ng-container>
+
+        <!-- Country Column -->
+        <ng-container matColumnDef="country">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Country</b></th>
+          <td mat-cell *matCellDef="let row">{{row.country}}</td>
+        </ng-container>
+
+        <!-- Father/Sire Column -->
+        <ng-container matColumnDef="father">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Sire</b></th>
+          <td mat-cell *matCellDef="let row">
+            {{row.fatherName ? row.fatherName : "(No Parent Attached)"}}
+            <button type="button" mat-icon-button *ngIf="row.fatherName != null && row.fatherName != ''"
+              (click)="triggerSearch(row.fatherName)" matTooltip="Click to opy to search box and find.">
+              <mat-icon style="font-size:15px; color:rebeccapurple">search</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <!-- Mother/Dam Column -->
+        <ng-container matColumnDef="mother">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Dam</b></th>
+          <td mat-cell *matCellDef="let row">
+            {{row.motherName ? row.motherName : "(No Parent Attached)"}}
+            <button type="button" mat-icon-button *ngIf="row.motherName != null && row.motherName != ''"
+              (click)="triggerSearch(row.motherName)" matTooltip="Click to copy to search box and find.">
+              <mat-icon style="font-size:15px; color:rebeccapurple">search</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="bestRaceClass">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Best Race Class</b></th>
+          <td mat-cell *matCellDef="let row" class="column-clickable">
+              <span [ngbTooltip]="bestRaceClassBubbleContent" container="body" tooltipClass="bubble" triggers="manual" #t="ngbTooltip" (click)="toggleRaceBubble(t, row)">
+                  {{row.bestRaceClass}}
+              </span>
+          </td>
+        </ng-container>
+
+        <!-- MtDNA Column -->
+        <ng-container matColumnDef="mtDNA">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><b>MtDNA</b></th>                    
+          <td mat-cell *matCellDef="let row">
+              <span [ngStyle]="{'background-color': row.mtDNAColor}" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>&nbsp;{{row.mtDNATitle}}</span>
+          </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions" *ngIf="!isHypotheticalResultset">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let row">
+
+            <button mat-icon-button matTooltip="Edit Horse" (click)="onEdit(row.id)">
+              <mat-icon>rate_review</mat-icon>
+            </button>
+            <button mat-icon-button matTooltip="Delete Horse" (click)="onDelete(row.id, row.name, row.oId)">
+              <mat-icon>delete</mat-icon>
+            </button>
+
+          </td>
+        </ng-container>
+
+        <!-- Created Column -->
+        <!--<ng-container matColumnDef="created">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
+          Created
+        </th>
+        <td mat-cell *matCellDef="let row">{{row.created_at | date}}</td>
+      </ng-container>-->
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <!-- Group header -->
+        <ng-container matColumnDef="groupHeader">
+          <td colspan="999" mat-cell *matCellDef="let row"><strong>{{row.showHeaderText}}</strong></td>
+        </ng-container>
+        <tr mat-row *matRowDef="let row; columns: ['groupHeader']; when: isGroup"> </tr>
+
+      </table>
+
+      <div class="p-5 text-center text-danger" *ngIf="resultsLength === 0">No Results to show at the moment.</div>
+    </div>
+
+    <mat-paginator [length]="resultsLength" [pageSize]="100"></mat-paginator>
+  </div>
+</div>

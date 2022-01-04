@@ -1,0 +1,23 @@
+<div class="tab-view">
+    <div class="row mx-1 mt-2">
+        <div class="col-sm-3">
+            <app-horse-search label="Female" sex="Female" [(value)]="horse"></app-horse-search>
+        </div>
+        <div class="col-sm-2 mt-2">
+            <button mat-mini-fab (click)="search()" [disabled]="!enableSearch()" color="primary">
+                <mat-icon>search</mat-icon>
+            </button>
+            <button *ngIf="showSearchClear" class="ml-2" mat-mini-fab (click)="clearSearchBox()" color="accent">
+                <mat-icon>clear</mat-icon>
+            </button>
+        </div>
+    </div>
+    <div>
+        <div class="loading-overlay" *ngIf="loading">
+            <mat-spinner></mat-spinner>
+        </div>
+        <div #radialChartContainer style="position:relative;">
+            <svg id="female-radial-chart" height=1000 width='100%'></svg>
+        </div>
+    </div>
+</div>

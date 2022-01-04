@@ -1,0 +1,68 @@
+<div class="tab-view">
+    <div class="loading-overlay" *ngIf="loadingData || adding">
+    <mat-spinner></mat-spinner>
+  </div>
+  <div class="row mx-1 mt-2">
+        <div class="col-sm-3">
+            <app-horse-search label="Start mare horse" sex="Female" [(value)]="startHorse"></app-horse-search>
+        </div>
+        <div class="col-sm-3">
+            <app-horse-search label="End mare horse" sex="Female" [(value)]="endHorse"></app-horse-search>
+        </div>
+        <div class="col-sm-2 mt-2">
+            <button mat-raised-button color="primary" (click)="onAdd()">Add</button>
+        </div>
+    </div>
+
+    <div>
+        <table mat-table [dataSource]="dataSource" matSort matSortActive="no" matSortDisableClear
+            matSortDirection="asc">
+
+            <ng-container matColumnDef="no">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header><b>No</b></th>
+                <td mat-cell *matCellDef="let row; let i = index">
+                    <span>{{i + 1}}</span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="start_horse">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Start mare horse</b></th>
+                <td mat-cell *matCellDef="let row">{{row.startHorseName}}-{{row.startHorseAge}}-{{row.startHorseCountry}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="end_horse">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header><b>End mare horse</b></th>
+                <td mat-cell *matCellDef="let row">{{row.endHorseName}}-{{row.endHorseAge}}-{{row.endHorseCountry}}</td>
+            </ng-container>
+
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td mat-cell *matCellDef="let row; let i = index;">
+                    <!-- <button mat-icon-button matTooltip="Edit" [disabled]="updatingFlag[i] == true">
+                        <mat-icon *ngIf="!updatingFlag[i]">pencil</mat-icon>
+                        <mat-icon *ngIf="updatingFlag[i]">
+                            <mat-spinner color="primary" diameter="20">
+                            </mat-spinner>
+                        </mat-icon>
+                    </button> -->
+                    <button mat-icon-button matTooltip="Delete" (click)="onDelete(row, i)"
+                        [disabled]="deletingFlag[i] == true">
+                        <mat-icon *ngIf="!deletingFlag[i]">delete</mat-icon>
+                        <mat-icon *ngIf="deletingFlag[i]">
+                            <mat-spinner color="primary" diameter="20">
+                            </mat-spinner>
+                        </mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        </table>
+
+        <div class="p-5 text-center text-danger" *ngIf="resultsLength === 0">No Results to show at the moment.</div>
+    </div>
+</div>

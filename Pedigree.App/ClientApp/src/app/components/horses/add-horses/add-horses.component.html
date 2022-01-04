@@ -1,0 +1,94 @@
+<div class="page-view">
+  <h3 class="text-center">Add Horses</h3>
+
+  <div class="loading-overlay" *ngIf="loadingData">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div>
+    <input #csvInput hidden="true" type="file" onclick="this.value=null" (change)="csvInputChange($event)"
+      accept=".csv" />
+    <button mat-flat-button color="primary" (click)="csvInput.click()">Choose Spreadsheet File (CSV)</button>
+  </div>
+
+  <div class="horselist-table-container">
+    <table mat-table [dataSource]="horseData" class="horselist-table">
+
+      <!-- No Column -->
+      <ng-container matColumnDef="no">
+        <th mat-header-cell *matHeaderCellDef><b>No</b></th>
+        <td mat-cell *matCellDef="let i = index">
+          <span>{{i + 1}}</span>
+        </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef><b>Name</b></th>
+        <td class="popover-trigger" mat-cell *matCellDef="let row; let i = index;" (click)="openDialog(row, i)">
+          <span>{{row.name}}</span>
+          <mat-icon class="text-success" *ngIf="row.id != undefined">check</mat-icon>
+        </td>
+      </ng-container>
+
+      <!-- Yob Column -->
+      <ng-container matColumnDef="age">
+        <th mat-header-cell *matHeaderCellDef><b>YOB</b></th>
+        <td mat-cell *matCellDef="let row">{{row.age}}</td>
+      </ng-container>
+
+      <!-- Sex Column -->
+      <ng-container matColumnDef="sex">
+        <th mat-header-cell *matHeaderCellDef><b>Sex</b></th>
+        <td mat-cell *matCellDef="let row">{{row.sex}}</td>
+      </ng-container>
+
+      <!-- Country Column -->
+      <ng-container matColumnDef="country">
+        <th mat-header-cell *matHeaderCellDef><b>Country</b></th>
+        <td mat-cell *matCellDef="let row">{{row.country}}</td>
+      </ng-container>
+
+      <!-- Sire Column -->
+      <ng-container matColumnDef="sire">
+        <th mat-header-cell *matHeaderCellDef><b>Sire</b></th>
+        <td mat-cell *matCellDef="let row">
+          {{row.fatherName}}
+          <mat-icon class="text-success" *ngIf="row.fatherOId != undefined">check</mat-icon>
+        </td>
+      </ng-container>
+
+      <!-- Dam Column -->
+      <ng-container matColumnDef="dam">
+        <th mat-header-cell *matHeaderCellDef><b>Dam</b></th>
+        <td mat-cell *matCellDef="let row">
+          {{row.motherName}}
+          <mat-icon class="text-success" *ngIf="row.motherOId != undefined">check</mat-icon>
+        </td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let row; let i = index;">
+          <button mat-icon-button matTooltip="Save Horse" [disabled]="row.id != undefined">
+            <mat-icon>save</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="Delete Horse" (click)="onDelete(row, i)" [disabled]="deletingHorse[i] == true">
+            <mat-icon *ngIf="!deletingHorse[i]">delete</mat-icon>
+            <mat-icon *ngIf="deletingHorse[i]">
+              <mat-spinner color="primary" diameter="20">
+              </mat-spinner>
+            </mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+
+      <tr mat-row *matRowDef="let row; columns: displayColumns;" [ngClass]="row.id ? 'tr-saved' : ''"></tr>
+    </table>
+
+    <div class="p-5 text-center text-danger" *ngIf="resultsLength === 0">No Results to show at the moment.</div>
+  </div>
+</div>

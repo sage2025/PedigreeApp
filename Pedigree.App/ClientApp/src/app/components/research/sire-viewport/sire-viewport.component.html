@@ -1,0 +1,19 @@
+<div class="centered page-view">
+  <mat-tab-group [selectedIndex]="activeTab" (selectedTabChange)="onTabChanged($event)">
+    <mat-tab label="Sire/Ancestor Search">
+      <app-research-sire-search></app-research-sire-search>
+    </mat-tab>
+    <mat-tab label="Sire/Broodmare Search">
+      <app-research-sire-broodmare-search [selected]="activeTab == 1"></app-research-sire-broodmare-search>
+    </mat-tab>
+    <mat-tab label="Sireline Search">
+      <app-research-sireline-search [selected]="activeTab == 2"></app-research-sireline-search>
+    </mat-tab>
+    <mat-tab label="Sire/Broodmare Crosses">
+      <app-research-sire-broodmare-crosses [selected]="activeTab == 3"></app-research-sire-broodmare-crosses>
+    </mat-tab>
+    <mat-tab label="MtDNA Lookup">
+      <app-research-mtdna-lookup [selected]="activeTab == 4"></app-research-mtdna-lookup>
+    </mat-tab>
+  </mat-tab-group>
+</div>

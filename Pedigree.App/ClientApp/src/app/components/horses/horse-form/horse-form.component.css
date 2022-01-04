@@ -1,0 +1,26 @@
+
+.tlist-loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 56px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.horse-option {
+  line-height: unset !important;
+  height: unset !important;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+
+.form-field-action {
+  width: unset !important;
+  height: unset !important;
+}

@@ -1,0 +1,13 @@
+
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      Edit Horse <span><a mat-icon-button [routerLink]="['/charts/ancestry/' + horseId]" target="_blank"><mat-icon style="color:deepskyblue">account_tree</mat-icon></a></span>
+    </mat-card-title>
+  </mat-card-header>
+  <app-horse-form [horseId]="horseId" (horseChanged)="updateHorse($event)"></app-horse-form>
+
+</mat-card>
+
+
+

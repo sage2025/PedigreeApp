@@ -1,0 +1,9 @@
+<div class="tab-view">
+    <div class="centered page-view">
+      <mat-tab-group [selectedIndex]="activeTab" (selectedTabChange)="onTabChanged($event)">
+        <mat-tab label="Active Sales">
+          <app-active-sales></app-active-sales>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+</div>

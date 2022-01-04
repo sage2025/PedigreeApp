@@ -1,0 +1,10 @@
+<div class="centered page-view">
+  <mat-tab-group [selectedIndex]="activeTab" (selectedTabChange)="onTabChanged($event)">
+    <mat-tab label="Female line Search">
+      <app-research-female-line-search></app-research-female-line-search>
+    </mat-tab>
+    <mat-tab label="Family Stakes Search">
+      <app-research-family-stakes-search [selected]="activeTab == 1"></app-research-family-stakes-search>
+    </mat-tab>
+  </mat-tab-group>
+</div>

@@ -1,0 +1,27 @@
+.race-column-date {
+    width: 150px;
+}
+.race-column-country {
+    width: 150px;
+}
+.race-column-name {
+    width: 300px;
+}
+.race-column-distance {
+    width: 150px;
+}
+.race-column-surface {
+    width: 100px;
+}
+.race-column-type {
+    width: 150px;
+}
+.race-column-status {
+    width: 100px;
+}
+.race-column-value {
+    width: 80px;
+}
+.race-column-action {
+    width: 150px;
+}

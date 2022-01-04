@@ -1,0 +1,22 @@
+<div class="centered page-view">
+  <mat-tab-group [selectedIndex]="activeTab" (selectedTabChange)="onTabChanged($event)">
+    <mat-tab label="Founders">
+      <app-founder-list [haploGroups]="haploGroups"></app-founder-list>
+    </mat-tab>
+    <mat-tab label="mtDNA Flags">
+      <app-mtdna-flag></app-mtdna-flag>
+    </mat-tab>
+    <mat-tab label="MtDNA Admin">
+      <app-mtdna-admin [haploGroups]="haploGroups" [loadingData]="loadingData"></app-mtdna-admin>
+    </mat-tab>
+    <mat-tab label="MtDNA Population">
+      <app-mtdna-population [haploGroups]="haploGroups" [loadingData]="loadingData"></app-mtdna-population>
+    </mat-tab>
+    <mat-tab label="MtDNA by Stallion">
+      <app-mtdna-stallion></app-mtdna-stallion>
+    </mat-tab>
+    <mat-tab label="MtDNA by Distance">
+      <app-mtdna-distance></app-mtdna-distance>
+    </mat-tab>
+  </mat-tab-group>
+</div>

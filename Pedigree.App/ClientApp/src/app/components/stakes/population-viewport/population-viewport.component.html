@@ -1,0 +1,10 @@
+<div class="centered page-view">
+  <mat-tab-group [selectedIndex]="activeTab" (selectedTabChange)="onTabChanged($event)">
+    <mat-tab label="Current">
+      <app-stakes-zcurrent-chart [selected]="activeTab == 0"></app-stakes-zcurrent-chart>
+    </mat-tab>
+    <mat-tab label="Historical">
+      <app-stakes-zhistorical-chart [selected]="activeTab == 1"></app-stakes-zhistorical-chart>
+    </mat-tab>
+  </mat-tab-group>
+</div>

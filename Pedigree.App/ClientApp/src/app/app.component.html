@@ -1,0 +1,24 @@
+<body>
+  <mat-toolbar color="primary" class="header">
+    <div>Pedigree</div>
+    <span class="nav-tool-items">
+      <mat-icon (click)="sidenav.toggle()" class="hamburger">menu</mat-icon>
+    </span>
+  </mat-toolbar>
+
+  <mat-sidenav-container>
+    <!-- Sidenav -->
+    <mat-sidenav #sidenav [mode]="isBiggerScreen() ? 'over' : 'side'" [(opened)]="opened" [fixedInViewport]="true"
+      [fixedTopGap] color="accent">
+      <mat-nav-list>
+        <app-menu-list-item *ngFor="let item of navItems" [item]="item"></app-menu-list-item>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <!-- Main content -->
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+</body>

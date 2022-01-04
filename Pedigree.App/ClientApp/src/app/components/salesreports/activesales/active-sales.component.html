@@ -1,0 +1,115 @@
+<div class="mt-4">
+    <div class="row">
+        <div class="col-md-3">
+            <mat-form-field appearance="fill">
+                <mat-label>Current Sale</mat-label>
+                <mat-select [(ngModel)]="auctionId" id="auction" name="auction" (selectionChange)="onGetAuctionDetail($event, auctionId)">
+                  <mat-option *ngFor="let data of saleData" [value]="data.id">
+                    {{data.auctionName}} ( {{ data.auctionDate }} ) - {{ data.count }} 
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-md-9">
+            <div class="text-right" *ngIf="isReportAvailable">
+                <button mat-raised-button class="mr-1" color="primary" (click)="onSummaryReport()">Sales Summary Report</button>
+                <button mat-raised-button color="warn" (click)="onBestReport()">Best of Sale Report</button>
+              </div>
+        </div>
+    </div>
+</div>
+<div class="page-view mt-4">  
+    <div class="loading-overlay" *ngIf="loadingData">
+      <mat-spinner></mat-spinner>
+    </div>
+  
+    <div id="title" class="row"  *ngIf="isReportAvailable">
+        <div class="col-md-12">
+            <label class="mr-1">Auction Date: </label> <b class="text-primary mr-4">{{ auctionDate }}</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <label class="mr-1">Auction Name: </label> <b class="text-success">{{ auctionName }}</b>
+        </div>
+    </div>
+    <div class="horselist-table-container">
+      <table mat-table [dataSource]="horseData" matSort>
+  
+        <!-- No Column -->
+        <ng-container matColumnDef="no">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Lot Number</b></th>
+          <td mat-cell *matCellDef="let row">
+            <span>{{row.lotNumber}}</span>
+          </td>
+        </ng-container>
+  
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Horse</b></th>
+          <td class="popover-trigger" mat-cell *matCellDef="let row; let i = index;">
+            <span>{{row.name}}</span>
+          </td>
+        </ng-container>
+
+        <!-- Yearling Column -->
+        <ng-container matColumnDef="yearling">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Yearling</b></th>
+          <td mat-cell *matCellDef="let row">{{ row.yearling }}</td>
+        </ng-container>
+  
+        <!-- Yob Column -->
+        <ng-container matColumnDef="yob">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><b>YOB</b></th>
+          <td mat-cell *matCellDef="let row">{{row.yob}}</td>
+        </ng-container>
+  
+        <!-- Sex Column -->
+        <ng-container matColumnDef="sex">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Sex</b></th>
+          <td mat-cell *matCellDef="let row">{{row.sex}}</td>
+        </ng-container>
+  
+        <!-- Country Column -->
+        <ng-container matColumnDef="country">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Country</b></th>
+          <td mat-cell *matCellDef="let row">{{row.country}}</td>
+        </ng-container>
+  
+        <!-- Sire Column -->
+        <ng-container matColumnDef="sire">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Sire</b></th>
+          <td mat-cell *matCellDef="let row">
+            {{row.fatherName}}
+          </td>
+        </ng-container>
+  
+        <!-- Dam Column -->
+        <ng-container matColumnDef="dam">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Dam</b></th>
+          <td mat-cell *matCellDef="let row">
+            {{row.motherName}}
+          </td>
+        </ng-container>
+
+        <!-- Dam Column -->
+        <ng-container matColumnDef="mtDNAHap">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><b>mtDNAHap</b></th>
+          <td mat-cell *matCellDef="let row">
+            <span [ngStyle]="{'background-color': row.mtDNAHap.color}" class="mr-1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>{{row.mtDNAHap.name}}</span>
+          </td>
+        </ng-container>
+
+        <!-- Order Report Column -->
+        <ng-container matColumnDef="order_report">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let row">
+            <button mat-raised-button color="accent" (click)="onOrderReport(row.sireId, row.damId, row.name, auctionDate, auctionName)">Order Report</button>
+          </td>
+        </ng-container>
+
+  
+        <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+  
+        <tr mat-row *matRowDef="let row; columns: displayColumns;" [ngClass]="row.id ? 'tr-saved' : ''"></tr>
+      </table>
+  
+      <div class="p-5 text-center text-danger" *ngIf="horseData.data.length === 0">No Results to show at the moment.</div>
+    </div>
+</div>

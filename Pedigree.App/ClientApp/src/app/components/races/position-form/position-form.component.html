@@ -1,0 +1,19 @@
+<form [ngClass]="{'container':position != undefined}" [formGroup]="positionForm" (ngSubmit)="onPositionSubmit()">
+    <mat-form-field style="width:70px;">
+        <input type="number" matInput formControlName="place" placeholder="Place" min="1" required>
+    </mat-form-field>
+    <mat-form-field class="p-2" style="width:250px;" floatLabel="Horse">
+        <input matInput type="text" [formControl]="searchHorsesCtrl" [matAutocomplete]="horseSelect" placeholder="Horse" required>
+        <mat-autocomplete #horseSelect="matAutocomplete" [displayWith]="displayHorse">
+          <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option>
+          <ng-container *ngIf="!isLoading">
+            <mat-option class="horse-option" *ngFor="let horse of filteredHorses" [value]="horse" (onSelectionChange)="selectHorse(horse)">
+              <span><b>{{horse.name}}</b> - {{horse.country}} - {{horse.age}}{{horse.family ? ' - ' + horse.family : ''}}<br /> &nbsp;by {{horse.fatherName ? horse.fatherName : '(no parent attached)'}}</span>
+            </mat-option>
+          </ng-container>
+        </mat-autocomplete>
+    </mat-form-field>
+    <button mat-raised-button color="primary" class="ml-1 mr-2">
+        {{position != undefined ? 'Update' : 'Add'}}
+    </button>
+</form>

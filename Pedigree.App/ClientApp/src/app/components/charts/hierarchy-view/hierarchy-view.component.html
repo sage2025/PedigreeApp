@@ -1,0 +1,55 @@
+<div class="centered page-view">
+  <div class="mb-0 font-weight-bold text-md-center" *ngIf="currentHorse">
+    {{currentHorse.name}} ({{currentHorse.country}})-{{currentHorse.age}} <span
+      class="text-uppercase">{{currentHorse.sex}}</span> {{currentHorse.father}} - {{currentHorse.mother}} by
+    {{currentHorse.sireOfDam}}
+    <p class="font-weight-normal">
+      (
+      Family:{{currentHorse.family}},
+      MtDNA:{{currentHorse.mtDNATitle}},
+      Historical Z-Score:{{currentHorse.zHistoricalBPR ? currentHorse.zHistoricalBPR.toFixed(4) : ''}},
+      Current Z-Score:{{currentHorse.zCurrentBPR ? currentHorse.zCurrentBPR.toFixed(4) : ''}},
+      Ballou: {{currentHorse.bal ? currentHorse.bal.toFixed(4) : ''}},
+      AHC: {{currentHorse.ahc ? currentHorse.ahc.toFixed(4) : ''}},
+      Kalinowski: {{currentHorse.kal ? currentHorse.kal.toFixed(4) : ''}}
+      )
+    </p>
+  </div>
+  <div class="loading-overlay" *ngIf="loadingChartData">
+    <mat-spinner></mat-spinner>
+  </div>
+  <mat-tab-group>
+    <mat-tab label="5-Cross">
+      <app-lineage-graph [inputChartData]="treeData" [inputPopulationHaploGroups]="populationHaploGroups" [inputHorseHaploGroups]="horseHaploGroups"></app-lineage-graph>
+    </mat-tab>
+    <mat-tab label="Stakes Record">
+      <app-stakes-record [horseId]="horseId"></app-stakes-record>
+    </mat-tab>
+    <mat-tab label="Linebreeding">
+      <app-linebreeding-list [horseId]="horseId"></app-linebreeding-list>
+    </mat-tab>
+    <mat-tab label="Equivalents">
+      <app-equivalents-list [horseId]="horseId"></app-equivalents-list>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        Unique Ancestors
+        <span class="badge badge-danger">{{uniqueAncestorsCount}}</span>
+      </ng-template>
+      <app-horse-list-view [horseId]="horseId" dataType="uniqueancestors" (dataLoaded)="update($event)">
+      </app-horse-list-view>
+    </mat-tab>
+    <mat-tab label="Offspring">
+      <!--TODO: Find a way to easily lazy load the tabs once when navigated to-->
+      <app-horse-list-view [horseId]="horseId" dataType="offsprings"></app-horse-list-view>
+    </mat-tab>
+    <mat-tab label="Siblings">
+      <app-horse-list-view [horseId]="horseId" dataType="siblings"></app-horse-list-view>
+    </mat-tab>
+    <mat-tab label="Tail Female">
+      <app-horse-list-view [horseId]="horseId" dataType="femaletail"></app-horse-list-view>
+    </mat-tab>
+
+  </mat-tab-group>
+
+</div>

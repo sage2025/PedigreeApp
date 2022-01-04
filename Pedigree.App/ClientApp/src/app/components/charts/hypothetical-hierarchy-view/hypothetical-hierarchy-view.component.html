@@ -1,0 +1,34 @@
+<div class="centered page-view">
+  <div class="mb-0 font-weight-bold text-md-center">Hypothetical Mating - <span class="text-uppercase" style="font-size:0.9rem;">{{sireName}} ({{sireCountry}}) ex {{damName}} ({{damCountry}})</span></div>
+  <div class="loading-overlay"
+       *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+  <mat-tab-group>
+    <mat-tab label="5-Cross">
+      <app-lineage-graph [inputChartData]="treeData" [inputPopulationHaploGroups]="populationHaploGroups" [inputHorseHaploGroups]="horseHaploGroups"></app-lineage-graph>
+    </mat-tab>
+    <mat-tab label="Linebreeding"><app-linebreeding-list [maleHorseId]="maleHorseId" [femaleHorseId]="femaleHorseId"></app-linebreeding-list></mat-tab>
+    <mat-tab label="Equivalents"><app-equivalents-list [maleHorseId]="maleHorseId" [femaleHorseId]="femaleHorseId"></app-equivalents-list></mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        Unique Ancestors
+        <span class="badge badge-danger">{{uniqueAncestorsCount}}</span>
+      </ng-template>
+      <app-horse-list-view [maleHorseId]="maleHorseId" [femaleHorseId]="femaleHorseId" dataType="uniqueancestors" (dataLoaded)="update($event)"></app-horse-list-view>
+    </mat-tab>
+    <!--TODO: Find a way to easily lazy load the tabs once when navigated to-->
+    <mat-tab label="Siblings">
+      <app-horse-list-view [horseId]="femaleHorseId" dataType="siblings"></app-horse-list-view>
+    </mat-tab>
+    <mat-tab label="Tail Female">
+      <app-horse-list-view [horseId]="femaleHorseId" dataType="femaletail"></app-horse-list-view>
+    </mat-tab>
+
+    <mat-tab disabled>
+      <ng-template mat-tab-label>
+        <a  mat-raised-button color="accent" (click) = "reportDialog()"  style="color:black;background-color: #ffca00; font-size: 0.9rem;font: bold;"> Order ML Report </a>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>  
+</div>

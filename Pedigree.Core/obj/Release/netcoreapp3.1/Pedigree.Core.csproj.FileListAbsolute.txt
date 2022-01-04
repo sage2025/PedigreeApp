@@ -1,0 +1,10 @@
+D:\Work\Jobs\PedigreeHorse\PedigreeApp\Pedigree.Core\bin\Release\netcoreapp3.1\Pedigree.Core.deps.json
+D:\Work\Jobs\PedigreeHorse\PedigreeApp\Pedigree.Core\bin\Release\netcoreapp3.1\Pedigree.Core.dll
+D:\Work\Jobs\PedigreeHorse\PedigreeApp\Pedigree.Core\bin\Release\netcoreapp3.1\Pedigree.Core.pdb
+D:\Work\Jobs\PedigreeHorse\PedigreeApp\Pedigree.Core\obj\Release\netcoreapp3.1\Pedigree.Core.AssemblyInfoInputs.cache
+D:\Work\Jobs\PedigreeHorse\PedigreeApp\Pedigree.Core\obj\Release\netcoreapp3.1\Pedigree.Core.AssemblyInfo.cs
+D:\Work\Jobs\PedigreeHorse\PedigreeApp\Pedigree.Core\obj\Release\netcoreapp3.1\Pedigree.Core.csproj.CoreCompileInputs.cache
+D:\Work\Jobs\PedigreeHorse\PedigreeApp\Pedigree.Core\obj\Release\netcoreapp3.1\Pedigree.Core.dll
+D:\Work\Jobs\PedigreeHorse\PedigreeApp\Pedigree.Core\obj\Release\netcoreapp3.1\Pedigree.Core.pdb
+D:\Work\Jobs\PedigreeHorse\PedigreeApp\Pedigree.Core\obj\Release\netcoreapp3.1\Pedigree.Core.csproj.AssemblyReference.cache
+D:\Work\Jobs\PedigreeHorse\PedigreeApp\Pedigree.Core\obj\Release\netcoreapp3.1\Pedigree.Core.GeneratedMSBuildEditorConfig.editorconfig

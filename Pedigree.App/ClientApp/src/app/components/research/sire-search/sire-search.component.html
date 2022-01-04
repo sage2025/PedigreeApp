@@ -1,0 +1,156 @@
+<ng-template #bestRaceClassBubbleContent let-name="name" let-races="races">
+    <h5>{{name}}</h5>
+    <table class="table text-light">
+        <thead>
+            <tr>
+                <th scope="col">Place</th>
+                <th scope="col">Date</th>
+                <th scope="col">Race Name</th>
+                <th scope="col">Status</th>
+                <th scope="col">Surface</th>
+                <th scope="col">Distance</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let race of races">
+                <th scope="row">{{race.place}}</th>
+                <td>{{race.date | date: 'yyyy-MM-dd'}}</td>
+                <td>{{race.name}}</td>
+                <td>{{race.status}}</td>
+                <td>{{race.surface}}</td>
+                <td>{{race.distance}}</td>
+            </tr>
+        </tbody>
+    </table>
+</ng-template>
+
+<div class="tab-view">
+    <div class="row mx-1 mt-2">
+        <div class="col-sm-4">
+            <mat-form-field class="w-100 p-2">
+                <mat-label>Sire/Male</mat-label>
+                <input matInput type="text" [formControl]="searchSiresCtrl" [matAutocomplete]="sireSelect">
+                <mat-autocomplete #sireSelect="matAutocomplete" [displayWith]="displayHorse">
+                    <mat-option *ngIf="isLoadingSires" class="is-loading">Loading...</mat-option>
+                    <mat-option *ngIf="errorLoadingSires != null">{{errorLoadingSires}}</mat-option>
+                    <ng-container *ngIf="!isLoadingSires">
+                        <mat-option class="horse-option" *ngFor="let horse of filteredSires" [value]="horse"
+                            (onSelectionChange)="selectHorse(horse, 'Male')">
+                            <span><b>{{horse.name}}</b> - {{horse.country}} - {{horse.age}}{{horse.family ? ' - ' +
+                                horse.family : ''}}<br /> &nbsp;by {{horse.fatherName ? horse.fatherName : '(no parent
+                                attached)'}}</span>
+                        </mat-option>
+                    </ng-container>
+                </mat-autocomplete>
+            </mat-form-field>
+        </div>
+        <div class="col-sm-4">
+            <mat-form-field class="w-100 p-2">
+                <mat-label>Female</mat-label>
+                <input matInput type="text" [formControl]="searchDamsCtrl" [matAutocomplete]="damSelect">
+                <mat-autocomplete #damSelect="matAutocomplete" [displayWith]="displayHorse">
+                    <mat-option *ngIf="isLoadingDams" class="is-loading">Loading...</mat-option>
+                    <mat-option *ngIf="errorLoadingSires != null">{{errorLoadingSires}}</mat-option>
+                    <ng-container *ngIf="!isLoadingDams">
+                        <mat-option class="horse-option" *ngFor="let horse of filteredDams" [value]="horse"
+                            (onSelectionChange)="selectHorse(horse, 'Female')">
+                            <span><b>{{horse.name}}</b> - {{horse.country}} - {{horse.age}}{{horse.family ? ' - ' +
+                                horse.family : ''}}<br /> &nbsp;by {{horse.fatherName ? horse.fatherName : '(no parent
+                                attached)'}}</span>
+                        </mat-option>
+                    </ng-container>
+                </mat-autocomplete>
+            </mat-form-field>
+        </div>
+        <div class="col-sm-2 mt-3">
+            <button mat-mini-fab (click)="search()" [disabled]="!enableSearch" color="primary">
+                <mat-icon>search</mat-icon>
+            </button>
+            <button *ngIf="showSearchClear" class="ml-2" mat-mini-fab (click)="clearSearchBox()" color="accent">
+                <mat-icon>clear</mat-icon>
+            </button>
+        </div>
+    </div>
+    <div class="mat-elevation-z8">
+        <div class="loading-overlay" *ngIf="loading">
+            <mat-spinner></mat-spinner>
+        </div>
+        <div class="horselist-table-container">
+            <table mat-table [dataSource]="horseData" class="horselist-table" matSort matSortActive="name"
+                matSortDisableClear matSortDirection="asc">
+
+                <!-- Go to pedigree link -->
+                <ng-container matColumnDef="pedigree">
+                    <th mat-header-cell *matHeaderCellDef class="horse-column-pedigree"><b>Pedigree</b></th>
+                    <td mat-cell *matCellDef="let row">
+                        <a mat-icon-button matTooltip="Heirarchy" target="_blank"
+                            [routerLink]="['/charts/ancestry/' + row.id]">
+                            <mat-icon color="primary">account_tree</mat-icon>
+                        </a>
+                    </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Name</b></th>
+                    <td mat-cell *matCellDef="let row">
+                        <span>{{row.name}}</span>
+                    </td>
+                </ng-container>
+
+                <!-- Sex Column -->
+                <ng-container matColumnDef="sex">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Sex</b></th>
+                    <td mat-cell *matCellDef="let row">{{row.sex}}</td>
+                </ng-container>
+
+                <!-- Yob Column -->
+                <ng-container matColumnDef="age">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>YOB</b></th>
+                    <td mat-cell *matCellDef="let row">{{row.age}}</td>
+                </ng-container>
+
+                <!-- Father/Sire Column -->
+                <ng-container matColumnDef="father">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Sire</b></th>
+                    <td mat-cell *matCellDef="let row">
+                        {{row.fatherName ? row.fatherName : "(No Parent Attached)"}}
+                    </td>
+                </ng-container>
+
+                <!-- Mother/Dam Column -->
+                <ng-container matColumnDef="mother">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Dam</b></th>
+                    <td mat-cell *matCellDef="let row">
+                        {{row.motherName ? row.motherName : "(No Parent Attached)"}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="bestRaceClass">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Best Race Class</b></th>
+                    <td mat-cell *matCellDef="let row" class="column-clickable">
+                        <span [ngbTooltip]="bestRaceClassBubbleContent" container="body"
+                            tooltipClass="bubble" triggers="manual" #t="ngbTooltip" (click)="toggleRaceBubble(t, row)">
+                            {{row.bestRaceClass}}
+                        </span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="mtDNATitle">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>mtDNAHap</b></th>
+                    <td mat-cell *matCellDef="let row">
+                        <span
+                            [ngStyle]="{'background-color': row.mtDNAColor}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>&nbsp;{{row.mtDNATitle}}</span>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <div class="p-5 text-center text-danger" *ngIf="horseData.data.length === 0">No Results to show at the
+                moment.</div>
+        </div>
+    </div>
+</div>

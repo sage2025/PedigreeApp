@@ -1,0 +1,16 @@
+D:\Work\Jobs\PedigreeHorse\PedigreeApp\Pedigree.Infrastructure\bin\Debug\netcoreapp3.1\Pedigree.Infrastructure.deps.json
+D:\Work\Jobs\PedigreeHorse\PedigreeApp\Pedigree.Infrastructure\bin\Debug\netcoreapp3.1\Pedigree.Infrastructure.runtimeconfig.json
+D:\Work\Jobs\PedigreeHorse\PedigreeApp\Pedigree.Infrastructure\bin\Debug\netcoreapp3.1\Pedigree.Infrastructure.runtimeconfig.dev.json
+D:\Work\Jobs\PedigreeHorse\PedigreeApp\Pedigree.Infrastructure\bin\Debug\netcoreapp3.1\Pedigree.Infrastructure.dll
+D:\Work\Jobs\PedigreeHorse\PedigreeApp\Pedigree.Infrastructure\bin\Debug\netcoreapp3.1\Pedigree.Infrastructure.pdb
+D:\Work\Jobs\PedigreeHorse\PedigreeApp\Pedigree.Infrastructure\bin\Debug\netcoreapp3.1\Pedigree.Core.dll
+D:\Work\Jobs\PedigreeHorse\PedigreeApp\Pedigree.Infrastructure\bin\Debug\netcoreapp3.1\Pedigree.Core.pdb
+D:\Work\Jobs\PedigreeHorse\PedigreeApp\Pedigree.Infrastructure\obj\Debug\netcoreapp3.1\Pedigree.Infrastructure.csproj.AssemblyReference.cache
+D:\Work\Jobs\PedigreeHorse\PedigreeApp\Pedigree.Infrastructure\obj\Debug\netcoreapp3.1\Pedigree.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+D:\Work\Jobs\PedigreeHorse\PedigreeApp\Pedigree.Infrastructure\obj\Debug\netcoreapp3.1\Pedigree.Infrastructure.AssemblyInfoInputs.cache
+D:\Work\Jobs\PedigreeHorse\PedigreeApp\Pedigree.Infrastructure\obj\Debug\netcoreapp3.1\Pedigree.Infrastructure.AssemblyInfo.cs
+D:\Work\Jobs\PedigreeHorse\PedigreeApp\Pedigree.Infrastructure\obj\Debug\netcoreapp3.1\Pedigree.Infrastructure.csproj.CoreCompileInputs.cache
+D:\Work\Jobs\PedigreeHorse\PedigreeApp\Pedigree.Infrastructure\obj\Debug\netcoreapp3.1\Pedigree.Infrastructure.csproj.CopyComplete
+D:\Work\Jobs\PedigreeHorse\PedigreeApp\Pedigree.Infrastructure\obj\Debug\netcoreapp3.1\Pedigree.Infrastructure.dll
+D:\Work\Jobs\PedigreeHorse\PedigreeApp\Pedigree.Infrastructure\obj\Debug\netcoreapp3.1\Pedigree.Infrastructure.pdb
+D:\Work\Jobs\PedigreeHorse\PedigreeApp\Pedigree.Infrastructure\obj\Debug\netcoreapp3.1\Pedigree.Infrastructure.genruntimeconfig.cache

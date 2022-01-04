@@ -1,0 +1,122 @@
+<ng-template #bestRaceClassBubbleContent let-name="name" let-races="races">
+  <h5>{{name}}</h5>
+  <table class="table text-light">
+      <thead>
+        <tr>
+          <th scope="col">Place</th>
+          <th scope="col">Date</th>
+          <th scope="col">Race Name</th>
+          <th scope="col">Status</th>
+          <th scope="col">Surface</th>
+          <th scope="col">Distance</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let race of races">
+          <th scope="row">{{race.place}}</th>
+          <td>{{race.date | date: 'yyyy-MM-dd'}}</td>
+          <td>{{race.name}}</td>
+          <td>{{race.status}}</td>
+          <td>{{race.surface}}</td>
+          <td>{{race.distance}}</td>
+        </tr>
+      </tbody>
+    </table>
+</ng-template>
+
+<div class="mt-4">
+  <div class="loading-overlay"
+       *ngIf="isLoadingResults || isRateLimitReached">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+  <div class="horselist-table-container">
+    <table mat-table [dataSource]="horseData" class="horselist-table"
+         matSort matSortActive="age" matSortDisableClear matSortDirection="desc">
+
+      <!-- Go to pedigree link -->
+      <ng-container matColumnDef="pedigree">
+        <th mat-header-cell *matHeaderCellDef class="horse-column-pedigree"><b>Pedigree</b></th>
+        <td mat-cell *matCellDef="let row">
+          <a mat-icon-button matTooltip="Heirarchy" target="_blank" [routerLink]="['/charts/ancestry/' + row.id]">
+            <mat-icon color="primary">account_tree</mat-icon>
+          </a>
+        </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef class="horse-column-name"><b>Name</b></th>
+        <td mat-cell *matCellDef="let row">
+          <span>{{row.name}}</span>
+        </td>
+      </ng-container>
+
+      <!-- Sex Column -->
+      <ng-container matColumnDef="sex">
+        <th mat-header-cell *matHeaderCellDef><b>Sex</b></th>
+        <td mat-cell *matCellDef="let row">{{row.sex}}</td>
+      </ng-container>
+
+      <!-- Yob Column -->
+      <ng-container matColumnDef="age">
+        <th mat-header-cell *matHeaderCellDef class="horse-column-yob"><b>YOB</b></th>
+        <td mat-cell *matCellDef="let row">{{row.age}}</td>
+      </ng-container>
+
+      <!-- Country Column -->
+      <ng-container matColumnDef="country">
+        <th mat-header-cell *matHeaderCellDef class="horse-column-country"><b>Country</b></th>
+        <td mat-cell *matCellDef="let row">{{row.country}}</td>
+      </ng-container>
+
+      <!-- Father/Sire Column -->
+      <ng-container matColumnDef="father">
+        <th mat-header-cell *matHeaderCellDef class="horse-column-name"><b>Sire</b></th>
+        <td mat-cell *matCellDef="let row">
+          {{row.fatherName}}
+        </td>
+      </ng-container>
+
+      <!-- Mother/Dam Column -->
+      <ng-container matColumnDef="mother">
+        <th mat-header-cell *matHeaderCellDef class="horse-column-name"><b>Dam</b></th>
+        <td mat-cell *matCellDef="let row">
+          {{row.motherName}}
+        </td>
+      </ng-container>
+
+      <!-- Family Column -->
+      <ng-container matColumnDef="family">
+        <th mat-header-cell *matHeaderCellDef><b>Family</b></th>
+        <td mat-cell *matCellDef="let row">{{row.family}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="bestRaceClass">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Best Race Class</b></th>
+        <td mat-cell *matCellDef="let row" class="column-clickable">
+            <span [ngbTooltip]="bestRaceClassBubbleContent" container="body" tooltipClass="bubble" triggers="manual" #t="ngbTooltip" (click)="toggleRaceBubble(t, row)">
+                {{row.bestRaceClass}}
+            </span>
+        </td>
+      </ng-container>
+
+      <!-- MtDNA Column -->
+      <ng-container matColumnDef="mtDNA">
+        <th mat-header-cell *matHeaderCellDef><b>MtDNA</b></th>                    
+        <td mat-cell *matCellDef="let row">
+            <span [ngStyle]="{'background-color': row.mtDNAColor}" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span>&nbsp;{{row.mtDNATitle}}</span>
+            <span *ngIf="dataType=='femaletail' && row.mtDNAFlag"><mat-icon>error_outline</mat-icon></span>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+
+    <div class="p-5 text-center text-danger" *ngIf="resultsLength === 0">No Results to show at the moment.</div>
+  </div>
+
+  <mat-paginator [length]="resultsLength" [pageSize]="100" showFirstLastButtons></mat-paginator>
+</div>

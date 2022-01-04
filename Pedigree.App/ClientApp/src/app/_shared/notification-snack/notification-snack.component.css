@@ -1,0 +1,15 @@
+.message {
+  background-color: red;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  padding: 5px;
+}
+
+.messageSuccess {
+  background-color: green;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  padding: 5px;
+}

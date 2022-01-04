@@ -1,0 +1,28 @@
+<div class="centered page-view">
+  <mat-tab-group [selectedIndex]="activeTab" (selectedTabChange)="onTabChanged($event)">
+    <mat-tab label="Current SR">
+      <app-ratings-list dataType="current-sr"></app-ratings-list>
+    </mat-tab>
+    <mat-tab label="Historical SR">
+      <app-ratings-list dataType="historical-sr"></app-ratings-list>
+    </mat-tab>
+    <mat-tab label="Current BMS SR">
+      <app-ratings-list dataType="current-bms-sr"></app-ratings-list>
+    </mat-tab>
+    <mat-tab label="Historical BMS SR">
+      <app-ratings-list dataType="historical-bms-sr"></app-ratings-list>
+    </mat-tab>
+    <mat-tab label="Current SOS SR">
+      <app-ratings-list dataType="current-sos-sr"></app-ratings-list>
+    </mat-tab>
+    <mat-tab label="Historical SOS SR">
+      <app-ratings-list dataType="historical-sos-sr"></app-ratings-list>
+    </mat-tab>
+    <mat-tab label="Current BMSOS SR">
+      <app-ratings-list dataType="current-bmsos-sr"></app-ratings-list>
+    </mat-tab>
+    <mat-tab label="Historical BMSOS SR">
+      <app-ratings-list dataType="historical-bmsos-sr"></app-ratings-list>
+    </mat-tab>
+  </mat-tab-group>
+</div>

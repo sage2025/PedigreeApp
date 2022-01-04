@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>Are you sure?</h1>
+<div mat-dialog-content>
+  <p *ngIf="data.name!=null">Delete <b class="text-danger">"{{data.name}}"</b>.</p>
+  <div class="alert alert-danger" role="alert" *ngIf="data.showAlert == 1">{{data.message}}</div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onConfirmClick()" color="primary">OK</button>
+  <button mat-button (click)="onNoClick()" color="warn" cdkFocusInitial>Cancel</button>
+</div>

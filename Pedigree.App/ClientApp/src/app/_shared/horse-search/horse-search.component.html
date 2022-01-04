@@ -1,0 +1,15 @@
+<mat-form-field class="w-100">
+  <mat-label>{{label}}</mat-label>
+  <input matInput aria-label="State" [matAutocomplete]="auto" [formControl]="searchHorsesCtrl" [readonly]="disabled">
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayHorse">
+    <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option>
+    <mat-option *ngIf="errorMsg != null">{{errorMsg}}</mat-option>
+    <ng-container *ngIf="!isLoading">
+      <mat-option class="horse-option" *ngFor="let horse of filteredHorses" [value]="horse">
+        <span><b>{{horse.name}}</b> - {{horse.country}} - {{horse.age}}{{horse.family ? ' - ' +
+          horse.family : ''}}<br /> &nbsp;by {{horse.fatherName ? horse.fatherName : '(no parent
+          attached)'}}</span>
+      </mat-option>
+    </ng-container>
+  </mat-autocomplete>
+</mat-form-field>

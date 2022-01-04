@@ -1,0 +1,85 @@
+<div class="loading-overlay" *ngIf="loadingData">
+    <mat-spinner></mat-spinner>
+</div>
+<table mat-table [dataSource]="horseData" matSort matSortActive="mtDNAHap"
+matSortDisableClear matSortDirection="asc" >
+    
+    <!-- No Column -->
+    <ng-container matColumnDef="no">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header><b>No</b></th>
+      <td mat-cell *matCellDef="let row">
+        <span>{{row.lotNumber}}</span>
+      </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Name</b></th>
+      <td class="popover-trigger" mat-cell *matCellDef="let row; let i = index;">
+        <span>{{row.name}}</span>
+      </td>
+    </ng-container>
+
+    <!-- Yearling Column -->
+    <ng-container matColumnDef="yearling">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Yearling</b></th>
+      <td mat-cell *matCellDef="let row">{{ row.yearling }}</td>
+    </ng-container>
+
+    <!-- Yob Column -->
+    <ng-container matColumnDef="yob">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header><b>YOB</b></th>
+      <td mat-cell *matCellDef="let row">{{row.yob}}</td>
+    </ng-container>
+
+    <!-- Sex Column -->
+    <ng-container matColumnDef="sex">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Sex</b></th>
+      <td mat-cell *matCellDef="let row">{{row.sex}}</td>
+    </ng-container>
+
+    <!-- Country Column -->
+    <ng-container matColumnDef="country">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Country</b></th>
+      <td mat-cell *matCellDef="let row">{{row.country}}</td>
+    </ng-container>
+
+    <!-- Sire Column -->
+    <ng-container matColumnDef="sire">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Sire</b></th>
+      <td mat-cell *matCellDef="let row">
+        {{row.fatherName}}
+      </td>
+    </ng-container>
+
+    <!-- Dam Column -->
+    <ng-container matColumnDef="dam">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Dam</b></th>
+      <td mat-cell *matCellDef="let row">
+        {{row.motherName}}
+      </td>
+    </ng-container>
+
+    <!-- Dam Column -->
+    <ng-container matColumnDef="mtDNAHap">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header><b>mtDNAHap</b></th>
+      <td mat-cell *matCellDef="let row">
+          <span [ngStyle]="{'background-color': row.mtDNAHap.color}" class="mr-1">                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>{{row.mtDNAHap.name}}</span>
+      </td>
+    </ng-container>
+
+    <!-- mlScore Column -->
+    <ng-container matColumnDef="mlScore">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> <b>mlSocre</b></th>
+      <td mat-cell *matCellDef="let row">
+          {{ row.mlScore }}
+      </td>
+    </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+
+    <tr mat-row *matRowDef="let row; columns: displayColumns;" [ngClass]="row.id ? 'tr-saved' : ''"></tr>
+</table>
+
+<div class="p-5 text-center text-danger" *ngIf="horseData.data.length === 0">No Results to show at the moment.</div>

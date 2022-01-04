@@ -1,0 +1,289 @@
+<ng-template #bestRaceClassBubbleContent let-name="name" let-races="races">
+    <h5>{{name}}</h5>
+    <table class="table text-light">
+        <thead>
+          <tr>
+            <th scope="col">Place</th>
+            <th scope="col">Date</th>
+            <th scope="col">Race Name</th>
+            <th scope="col">Status</th>
+            <th scope="col">Surface</th>
+            <th scope="col">Distance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let race of races">
+            <th scope="row">{{race.place}}</th>
+            <td>{{race.date | date: 'yyyy-MM-dd'}}</td>
+            <td>{{race.name}}</td>
+            <td>{{race.status}}</td>
+            <td>{{race.surface}}</td>
+            <td>{{race.distance}}</td>
+          </tr>
+        </tbody>
+      </table>
+</ng-template>
+
+<div class="tab-view">
+    <div *ngIf="!showSearchResult">
+        <div class="loading-overlay" *ngIf="loading">
+            <mat-spinner></mat-spinner>
+        </div>
+
+        <div>
+            <table class="table table-borderless">
+                <thead>
+                    <tr>
+                        <th scope="col">1st Generation</th>
+                        <th scope="col">2nd Generation</th>
+                        <th scope="col">3rd Generation</th>
+                        <th scope="col">4th Generation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="8">
+                            <app-horse-search label="Sire" sex="Male" [value]="searches[0]" (valueChange)="selectHorse(0, $event)"
+                                [disabled]="disableSireSide(0)"></app-horse-search>
+                        </td>
+                        <td rowspan="4">
+                            <app-horse-search sex="Male" [value]="searches[2]" (valueChange)="selectHorse(2, $event)"
+                                [disabled]="disableSireSide(2)"></app-horse-search>
+                        </td>
+                        <td rowspan="2">
+                            <app-horse-search sex="Male" [value]="searches[6]" (valueChange)="selectHorse(6, $event)"
+                                [disabled]="disableSireSide(6)"></app-horse-search>
+                        </td>
+                        <td>
+                            <app-horse-search sex="Male" [value]="searches[14]" (valueChange)="selectHorse(14, $event)"
+                                [disabled]="disableSireSide(14)"></app-horse-search>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <app-horse-search sex="Female" [value]="searches[15]" (valueChange)="selectHorse(15, $event)"
+                                [disabled]="disableSireSide(15)"></app-horse-search>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">
+                            <app-horse-search sex="Female" [value]="searches[7]" (valueChange)="selectHorse(7, $event)"
+                                [disabled]="disableSireSide(7)"></app-horse-search>
+                        </td>
+                        <td>
+                            <app-horse-search sex="Male" [value]="searches[16]" (valueChange)="selectHorse(16, $event)"
+                                [disabled]="disableSireSide(16)"></app-horse-search>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <app-horse-search sex="Female" [value]="searches[17]" (valueChange)="selectHorse(17, $event)"
+                                [disabled]="disableSireSide(17)"></app-horse-search>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td rowspan="4">
+                            <app-horse-search sex="Female" [value]="searches[3]" (valueChange)="selectHorse(3, $event)"
+                                [disabled]="disableSireSide(3)"></app-horse-search>
+                        </td>
+                        <td rowspan="2">
+                            <app-horse-search sex="Male" [value]="searches[8]" (valueChange)="selectHorse(8, $event)"
+                                [disabled]="disableSireSide(8)"></app-horse-search>
+                        </td>
+                        <td>
+                            <app-horse-search sex="Male" [value]="searches[18]" (valueChange)="selectHorse(18, $event)"
+                                [disabled]="disableSireSide(18)"></app-horse-search>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <app-horse-search sex="Female" [value]="searches[19]" (valueChange)="selectHorse(19, $event)"
+                                [disabled]="disableSireSide(19)"></app-horse-search>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">
+                            <app-horse-search sex="Female" [value]="searches[9]" (valueChange)="selectHorse(9, $event)"
+                                [disabled]="disableSireSide(9)"></app-horse-search>
+                        </td>
+                        <td>
+                            <app-horse-search sex="Male" [value]="searches[20]" (valueChange)="selectHorse(20, $event)"
+                                [disabled]="disableSireSide(20)"></app-horse-search>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <app-horse-search sex="Female" [value]="searches[21]" (valueChange)="selectHorse(21, $event)"
+                                [disabled]="disableSireSide(21)"></app-horse-search>
+                        </td>
+                    </tr>
+                    <tr class="border-top">
+                        <td rowspan="8">
+                            <app-horse-search label="Dam" sex="Female" [value]="searches[1]" (valueChange)="selectHorse(1, $event)"
+                                [disabled]="disableDamSide(1)"></app-horse-search>
+                        </td>
+                        <td rowspan="4">
+                            <app-horse-search sex="Male" [value]="searches[4]" (valueChange)="selectHorse(4, $event)"
+                                [disabled]="disableDamSide(4)">
+                            </app-horse-search>
+                        </td>
+                        <td rowspan="2">
+                            <app-horse-search sex="Male" [value]="searches[10]" (valueChange)="selectHorse(10, $event)"
+                                [disabled]="disableDamSide(10)"></app-horse-search>
+                        </td>
+                        <td>
+                            <app-horse-search sex="Male" [value]="searches[22]" (valueChange)="selectHorse(22, $event)"
+                                [disabled]="disableDamSide(22)"></app-horse-search>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <app-horse-search sex="Female" [value]="searches[23]" (valueChange)="selectHorse(23, $event)"
+                                [disabled]="disableDamSide(23)"></app-horse-search>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">
+                            <app-horse-search sex="Female" [value]="searches[11]" (valueChange)="selectHorse(11, $event)"
+                                [disabled]="disableDamSide(11)"></app-horse-search>
+                        </td>
+                        <td>
+                            <app-horse-search sex="Male" [value]="searches[24]" (valueChange)="selectHorse(24, $event)"
+                                [disabled]="disableDamSide(24)"></app-horse-search>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <app-horse-search sex="Female" [value]="searches[25]" (valueChange)="selectHorse(25, $event)"
+                                [disabled]="disableDamSide(25)"></app-horse-search>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td rowspan="4">
+                            <app-horse-search sex="Female" [value]="searches[5]" (valueChange)="selectHorse(5, $event)"
+                                [disabled]="disableDamSide(5)"></app-horse-search>
+                        </td>
+                        <td rowspan="2">
+                            <app-horse-search sex="Male" [value]="searches[12]" (valueChange)="selectHorse(12, $event)"
+                                [disabled]="disableDamSide(12)"></app-horse-search>
+                        </td>
+                        <td>
+                            <app-horse-search sex="Male" [value]="searches[26]" (valueChange)="selectHorse(26, $event)"
+                                [disabled]="disableDamSide(26)"></app-horse-search>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <app-horse-search sex="Female" [value]="searches[27]" (valueChange)="selectHorse(27, $event)"
+                                [disabled]="disableDamSide(27)"></app-horse-search>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">
+                            <app-horse-search sex="Female" [value]="searches[13]" (valueChange)="selectHorse(13, $event)"
+                                [disabled]="disableDamSide(13)"></app-horse-search>
+                        </td>
+                        <td>
+                            <app-horse-search sex="Male" [value]="searches[28]" (valueChange)="selectHorse(28, $event)"
+                                [disabled]="disableDamSide(28)"></app-horse-search>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <app-horse-search sex="Female" [value]="searches[29]" (valueChange)="selectHorse(29, $event)"
+                                [disabled]="disableDamSide(29)"></app-horse-search>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="text-right">
+            <button mat-raised-button (click)="search()" [disabled]="!enableSearch()" color="primary">
+                <mat-icon>search</mat-icon> Search
+            </button>
+        </div>
+    </div>
+
+    <div *ngIf="showSearchResult">
+        <div class="text-right">
+            <button *ngIf="showSearchClear" class="ml-2" mat-raised-button (click)="clearSearchBox()" color="accent">
+                <mat-icon>clear</mat-icon> Clear
+            </button>
+        </div>
+        <div class="horselist-table-container mt-2">
+            <table mat-table [dataSource]="horseData" class="horselist-table" matSort matSortActive="name"
+                matSortDisableClear matSortDirection="asc">
+
+                <!-- Go to pedigree link -->
+                <ng-container matColumnDef="pedigree">
+                    <th mat-header-cell *matHeaderCellDef class="horse-column-pedigree"><b>Pedigree</b></th>
+                    <td mat-cell *matCellDef="let row">
+                        <a mat-icon-button matTooltip="Heirarchy" target="_blank"
+                            [routerLink]="['/charts/ancestry/' + row.id]">
+                            <mat-icon color="primary">account_tree</mat-icon>
+                        </a>
+                    </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Name</b></th>
+                    <td mat-cell *matCellDef="let row">
+                        <span>{{row.name}}</span>
+                    </td>
+                </ng-container>
+
+                <!-- Sex Column -->
+                <ng-container matColumnDef="sex">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Sex</b></th>
+                    <td mat-cell *matCellDef="let row">{{row.sex}}</td>
+                </ng-container>
+
+                <!-- Yob Column -->
+                <ng-container matColumnDef="age">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>YOB</b></th>
+                    <td mat-cell *matCellDef="let row">{{row.age}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="fatherName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Sire</b></th>
+                    <td mat-cell *matCellDef="let row">
+                        {{row.fatherName ? row.fatherName : "(No Parent Attached)"}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="motherName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Dam</b></th>
+                    <td mat-cell *matCellDef="let row">
+                        {{row.motherName ? row.motherName : "(No Parent Attached)"}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="bestRaceClass">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Best Race Class</b></th>
+                    <td mat-cell *matCellDef="let row" class="column-clickable">
+                        <span [ngbTooltip]="bestRaceClassBubbleContent" container="body" tooltipClass="bubble"
+                            triggers="manual" #t="ngbTooltip" (click)="toggleRaceBubble(t, row)">
+                            {{row.bestRaceClass}}
+                        </span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="mtDNATitle">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>mtDNAHap</b></th>
+                    <td mat-cell *matCellDef="let row">
+                        <span
+                            [ngStyle]="{'background-color': row.mtDNAColor}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>&nbsp;{{row.mtDNATitle}}</span>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <div class="p-5 text-center text-danger" *ngIf="horseData.data.length === 0">No Results to show at the
+                moment.</div>
+        </div>
+    </div>
+</div>

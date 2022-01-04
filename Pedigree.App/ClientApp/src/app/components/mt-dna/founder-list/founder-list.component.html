@@ -1,0 +1,97 @@
+<div class="tab-view">
+    <div class="row mx-3">
+        <div class="col-sm-9">
+            <mat-form-field style="width: 250px;">
+                <input matInput (keyup)="changeFilter('searchQuery', $event.target.value)"
+                    placeholder="Search by Name contains...">
+            </mat-form-field>
+        </div>
+        <div class="col-sm-3 m-auto">
+            <mat-checkbox class="ml-3" (change)="changeFilter('isFounder', $event.checked)">
+                Founder?
+            </mat-checkbox>
+        </div>
+    </div>
+    <div class="mat-elevation-z8">
+        <div class="loading-overlay" *ngIf="loadingData || isRateLimitReached">
+            <mat-spinner *ngIf="loadingData"></mat-spinner>
+        </div>
+        <div class="horselist-table-container">
+            <table mat-table [dataSource]="dataSource" class="horselist-table" matSort matSortActive="name"
+                matSortDisableClear matSortDirection="asc">
+
+                <ng-container matColumnDef="no">
+                    <th mat-header-cell *matHeaderCellDef class="horse-column-no"> No </th>
+                    <td mat-cell *matCellDef="let i = index"> {{i + 1 + paginator.pageSize * paginator.pageIndex}} </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width:200px;"><b>Name</b></th>
+                    <td mat-cell *matCellDef="let row">
+                        <span>{{row.name}}</span>
+                    </td>
+                </ng-container>
+
+                <!-- Sex Column -->
+                <ng-container matColumnDef="sex">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Sex</b></th>
+                    <td mat-cell *matCellDef="let row">{{row.sex}}</td>
+                </ng-container>
+
+                <!-- Yob Column -->
+                <ng-container matColumnDef="age">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>YOB</b></th>
+                    <td mat-cell *matCellDef="let row">{{row.age}}</td>
+                </ng-container>
+
+                <!-- Country Column -->
+                <ng-container matColumnDef="country">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Country</b></th>
+                    <td mat-cell *matCellDef="let row">{{row.country}}</td>
+                </ng-container>
+
+                <!-- Family Column -->
+                <ng-container matColumnDef="family">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Family</b></th>
+                    <td mat-cell *matCellDef="let row">
+                        <input matInput #txtFamily [value]="row.family" (keydown.enter)="setFamily(txtFamily.value, row)" >
+                    </td>
+                </ng-container>
+
+                <!-- Founder Column -->
+                <ng-container matColumnDef="founder">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Founder</b></th>
+                    <td mat-cell *matCellDef="let row">
+                        <mat-checkbox (change)="setFounder($event, row)" [checked]="row.isFounder"></mat-checkbox>
+                    </td>
+                </ng-container>
+
+                <!-- MtDNA Column -->
+                <ng-container matColumnDef="mtdna">
+                    <th mat-header-cell *matHeaderCellDef style="width: 150px;"><b>MtDNA</b></th>
+                    <td mat-cell *matCellDef="let row">
+                        <mat-select [ngStyle]="{'display': row.isFounder != true ? 'none' : 'block'}" (selectionChange)="changeMtDNA(row, $event)" [(value)]="row.mtDNA">
+                            <mat-option>-- None --</mat-option>
+                            <mat-optgroup *ngFor="let group of haploGroups">
+                                <div><span [ngStyle]="{'background-color': group.color}">&nbsp;&nbsp;&nbsp;</span>&nbsp;<span>HaploGroup: {{group.title}}</span></div>
+                                <mat-option *ngFor="let type of group.types" [value]="type.id">
+                                    {{type.name}}
+                                </mat-option>
+                            </mat-optgroup>
+                        </mat-select>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            </table>
+
+            <div class="p-5 text-center text-danger" *ngIf="resultsLength === 0">No Results to show at the moment.</div>
+        </div>
+
+        <mat-paginator [length]="resultsLength" [pageSize]="100" showFirstLastButtons></mat-paginator>
+    </div>
+</div>

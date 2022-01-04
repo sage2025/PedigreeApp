@@ -1,0 +1,361 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+code {
+  color: #e01a76;
+}
+
+th {
+  font-weight: 500;
+}
+
+.mat-card-header-text {
+  width     : 100% !important;
+  text-align: center;
+  background: #F5F5F5
+}
+
+.mat-card-title {
+  margin-top   : 8px !important;
+  margin-bottom: 8px !important;
+  font-weight  : bold;
+}
+
+.btn-primary {
+  color           : #fff;
+  background-color: #1b6ec2;
+  border-color    : #1861ac;
+}
+
+html,
+body {
+  height: 100%;
+
+}
+
+body {
+  margin     : 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.header {
+  justify-content: space-between;
+}
+
+.mat-sidenav-container {
+  /*height: 100%;
+    display: flex;
+    flex: 1 1 auto;*/
+}
+
+.mat-nav-list .mat-list-item {
+  font-size: 15px;
+}
+
+.nav-tool-items {
+  display     : inline-block;
+  margin-right: 13px;
+}
+
+mat-sidenav-content {
+  padding: 15px;
+}
+
+mat-sidenav mat-icon {
+  margin-right: 5px;
+}
+
+/*.mat-sidenav,
+.mat-sidenav-content {
+  padding: 15px;
+}
+
+.mat-list-item.active {
+  background: rgba(0, 0, 0, .04);
+}
+
+.mat-sidenav-content {
+  padding: 25px 40px 0;
+}
+
+.mat-sidenav {
+  width: 250px;
+}
+
+mat-sidenav mat-icon {
+  margin-right: 12px;
+}*/
+.header {
+  position: sticky;
+  position: -webkit-sticky;
+  top     : 0;
+  z-index : 1000;
+}
+
+
+.hamburger {
+  margin-top: 5px;
+  cursor    : pointer;
+}
+
+.mat-radio-button,
+.mat-radio-group {
+  margin-right: 25px;
+}
+
+.controlers-wrapper>* {
+  width  : 100%;
+  padding: 0;
+}
+
+.misc-bottom-padding {
+  margin: 8px 0 10px;
+}
+
+.misc-bottom-padding mat-label {
+  margin-right: 15px;
+}
+
+mat-radio-group mat-radio-button {
+  margin-left: 5px;
+}
+
+.button-wrapper button {
+  margin-right: 5px;
+}
+
+table.mat-table,
+table {
+  width: 100%;
+}
+
+body .mat-list-item {
+  margin-bottom: 10px;
+}
+
+.inner-wrapper {
+  padding: 15px 0 130px;
+  width  : 100%;
+}
+
+
+.full-wrapper {
+  width: 100%;
+}
+
+.multiple-items {
+  position: relative;
+}
+
+.multiple-items .tooltip-info {
+  right    : 0;
+  top      : 7px;
+  cursor   : pointer;
+  color    : #a1a7c7;
+  position : absolute;
+  font-size: 20px;
+}
+
+body .push-right {
+  margin-right: 10px;
+}
+
+.no-data {
+  text-align : center;
+  padding-top: 30px;
+  color      : #6c75a9;
+}
+
+.button-wrapper {
+  margin: 20px 0 0 0;
+}
+
+.example-header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size : cover;
+}
+
+.title-group {
+  margin-bottom: 25px;
+}
+
+
+
+.my-alternate-theme button {
+  margin-right: 10px;
+}
+
+@media (max-width:1024px) {
+  .inner-wrapper mat-card {
+    width: 100%;
+  }
+
+  .mat-sidenav-content {
+    padding: 20px 20px 0;
+  }
+
+  .misc-bottom-padding mat-label {
+    display       : block;
+    padding-bottom: 10px;
+  }
+
+  .mat-sidenav {
+    width: 230px;
+  }
+
+  .mat-nav-list .mat-list-item {
+    font-size: 14px;
+  }
+}
+
+@media (max-width:767px) {
+  .nav-tool-items {
+    margin-right: 0;
+  }
+
+  .hamburger {
+    visibility: visible !important;
+  }
+}
+
+/*D3 related*/
+
+.node--internal circle {
+  fill: #555;
+}
+
+.node--internal text {
+  text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff;
+}
+
+.link {
+  fill          : none;
+  stroke        : #555;
+  stroke-opacity: 0.4;
+  stroke-width  : 1.5px;
+}
+
+.node {
+  cursor: pointer;
+}
+
+.node circle {
+  fill        : #999;
+  stroke      : steelblue;
+  stroke-width: 1.5px;
+}
+
+.node text {
+  font: 11px sans-serif;
+}
+
+.link {
+  fill        : none;
+  stroke      : #ccc;
+  stroke-width: 1.5px;
+}
+
+
+div.d3tooltip {
+  position     : absolute;
+  width        : auto;
+  opacity      : 0.8;
+  height       : auto;
+  padding      : 3px;
+  background   : #9767eb;
+  color        : #ffffff;
+  border-radius: 6px;
+}
+
+/*/D3 related*/
+
+.m-auto {
+  margin: auto;
+}
+
+.loading-overlay {
+  position       : absolute;
+  top            : 0;
+  left           : 0;
+  bottom         : 0;
+  right          : 0;
+  background     : rgba(0, 0, 0, 0.15);
+  z-index        : 1;
+  display        : flex;
+  align-items    : center;
+  justify-content: center;
+}
+
+.page-view {
+  min-height: calc(100vh - 96px);
+}
+
+.tab-view {
+  min-height: calc(100vh - 144px);
+}
+.horse-option {
+  line-height  : unset !important;
+  height       : unset !important;
+  margin-bottom: 5px;
+  margin-top   : 5px;
+}
+
+.column-no,
+.horse-column-no {
+  width: 90px;
+}
+
+.horse-column-pedigree {
+  width: 100px;
+}
+
+.horse-column-name {
+  width: 200px;
+}
+
+.horse-column-name-lg {
+  width: 300px;
+}
+
+.horse-column-yob,
+.horse-column-sex {
+  width: 80px;
+}
+
+.horse-column-country {
+  width: 120px;
+}
+
+.horse-column-value {
+  width: 90px;
+}
+.horse-column-value-lg {
+  width: 130px;
+}
+.column-numeric {
+  width: 90px;
+}
+
+.bubble .tooltip-inner {
+  background-color: #9767eb;
+  max-width: 700px;
+  color: white;
+}
+.bubble .arrow::before {
+  border-top-color: #9767eb;
+}
+
+.column-clickable {
+  color: #9767eb;
+  cursor: pointer;
+}
+
+.modal-fs { 
+  width: 95%!important;
+  max-width: none;
+  height: 100%;
+}

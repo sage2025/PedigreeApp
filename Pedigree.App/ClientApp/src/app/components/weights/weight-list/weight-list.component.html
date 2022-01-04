@@ -1,0 +1,108 @@
+<div class="page-view">
+    <div class="row">
+        <div class="col-sm-12">
+            <mat-form-field>
+                <mat-label>Country</mat-label>
+                <mat-select [(ngModel)]="filter.Country" multiple>
+                    <mat-option *ngFor="let c of countries" [value]="c">{{c}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="ml-1">
+                <mat-label>Distance</mat-label>
+                <mat-select [(ngModel)]="filter.Distance" multiple>
+                    <mat-option *ngFor="let d of distances" [value]="d.value">{{d.label}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="ml-1">
+                <mat-label>Surface</mat-label>
+                <mat-select [(ngModel)]="filter.Surface" multiple>
+                    <mat-option *ngFor="let s of surfaces" [value]="s">{{s}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="ml-1">
+                <mat-label>Type</mat-label>
+                <mat-select [(ngModel)]="filter.Type" multiple>
+                    <mat-option *ngFor="let t of types" [value]="t">{{t}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="ml-1">
+                <mat-label>Status</mat-label>
+                <mat-select [(ngModel)]="filter.Status" multiple>
+                    <mat-option *ngFor="let s of statuses" [value]="s">{{s}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <button mat-mini-fab (click)="searchItems()" color="primary" class="ml-1">
+                <mat-icon>search</mat-icon>
+            </button>
+            <button *ngIf="showSearchClear" class="ml-2" mat-mini-fab (click)="clearSearchBox()" color="accent">
+                <mat-icon>clear</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <div class="mat-elevation-z8">
+        <div class="horselist-loading-shade" *ngIf="loading">
+            <mat-spinner></mat-spinner>
+        </div>
+        <div class="text-right">
+            <button mat-raised-button color="primary" (click)="onAdd()">New Weight</button>
+        </div>
+        <table mat-table [dataSource]="weightData" matSort matSortActive="Country" matSortDisableClear
+            matSortDirection="desc">
+
+            <ng-container matColumnDef="country">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Country </th>
+                <td mat-cell *matCellDef="let row"> {{row.country}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="distance">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Distance </th>
+                <td mat-cell *matCellDef="let row" [style.color]="row.distance"> {{row.distance}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="surface">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Surface </th>
+                <td mat-cell *matCellDef="let row" [style.color]="row.surface"> {{row.surface}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>
+                <td mat-cell *matCellDef="let row" [style.color]="row.type"> {{row.type}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+                <td mat-cell *matCellDef="let row" [style.color]="row.status"> {{row.status}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="weight">
+                <th mat-header-cell *matHeaderCellDef> Weight </th>
+                <td mat-cell *matCellDef="let row" [style.color]="row.value"> {{row.value}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td class="text-right" mat-cell *matCellDef="let row">
+
+                    <button mat-icon-button matTooltip="Edit Weight" (click)="onEdit(row.id)">
+                        <mat-icon>rate_review</mat-icon>
+                    </button>
+                    <button mat-icon-button matTooltip="Delete Weight" (click)="onDelete(row.id)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+            </tr>
+        </table>
+
+        <mat-paginator [length]="resultsLength" [pageSize]="[100]"></mat-paginator>
+    </div>
+</div>

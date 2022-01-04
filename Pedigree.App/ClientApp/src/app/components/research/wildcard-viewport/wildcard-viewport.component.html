@@ -1,0 +1,16 @@
+<div class="centered page-view">
+  <mat-tab-group [selectedIndex]="activeTab" (selectedTabChange)="onTabChanged($event)">
+    <mat-tab label="Wildcard search">
+      <app-research-wildcard-search></app-research-wildcard-search>
+    </mat-tab>
+    <mat-tab label="Query By Position">
+      <app-research-query-position></app-research-query-position>
+    </mat-tab>
+    <mat-tab label="Inbreeding">
+      <app-inbreeding-list></app-inbreeding-list>
+    </mat-tab>
+    <mat-tab label="Common Ancestors">
+      <app-common-ancestors></app-common-ancestors>
+    </mat-tab>    
+  </mat-tab-group>
+</div>

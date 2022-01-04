@@ -1,0 +1,71 @@
+<div class="tab-view">
+    <div class="row mx-1 mt-2">
+        <div class="col-sm-4">
+            <mat-form-field class="w-100 p-2">
+                <mat-label>Sire</mat-label>
+                <input matInput type="text" [formControl]="searchSiresCtrl" [matAutocomplete]="sireSelect">
+                <mat-autocomplete #sireSelect="matAutocomplete" [displayWith]="displayHorse">
+                    <mat-option *ngIf="isLoadingSires" class="is-loading">Loading...</mat-option>
+                    <mat-option *ngIf="errorLoadingSires != null">{{errorLoadingSires}}</mat-option>
+                    <ng-container *ngIf="!isLoadingSires">
+                        <mat-option class="horse-option" *ngFor="let horse of filteredSires" [value]="horse"
+                            (onSelectionChange)="selectHorse(horse, 'Male')">
+                            <span><b>{{horse.name}}</b> - {{horse.country}} - {{horse.age}}{{horse.family ? ' - ' +
+                                horse.family : ''}}<br /> &nbsp;by {{horse.fatherName ? horse.fatherName : '(no parent
+                                attached)'}}</span>
+                        </mat-option>
+                    </ng-container>
+                </mat-autocomplete>
+            </mat-form-field>
+        </div>
+        <div class="col-sm-4">
+            <mat-form-field class="w-100 p-2">
+                <mat-label>Broodmare Sire</mat-label>
+                <input matInput type="text" [formControl]="searchBmSiresCtrl" [matAutocomplete]="bmSireSelect">
+                <mat-autocomplete #bmSireSelect="matAutocomplete" [displayWith]="displayHorse">
+                    <mat-option *ngIf="isLoadingBmSires" class="is-loading">Loading...</mat-option>
+                    <mat-option *ngIf="errorLoadingBmSires != null">{{errorLoadingBmSires}}</mat-option>
+                    <ng-container *ngIf="!isLoadingBmSires">
+                        <mat-option class="horse-option" *ngFor="let horse of filteredBmSires" [value]="horse"
+                            (onSelectionChange)="selectHorse(horse, 'Male')">
+                            <span><b>{{horse.name}}</b> - {{horse.country}} - {{horse.age}}{{horse.family ? ' - ' +
+                                horse.family : ''}}<br /> &nbsp;by {{horse.fatherName ? horse.fatherName : '(no parent
+                                attached)'}}</span>
+                        </mat-option>
+                    </ng-container>
+                </mat-autocomplete>
+            </mat-form-field>
+        </div>
+        <div class="col-sm-2 mt-3">
+            <button mat-mini-fab (click)="search()" [disabled]="!enableSearch" color="primary">
+                <mat-icon>search</mat-icon>
+            </button>
+            <button *ngIf="showSearchClear" class="ml-2" mat-mini-fab (click)="clearSearchBox()" color="accent">
+                <mat-icon>clear</mat-icon>
+            </button>
+        </div>
+    </div>
+    <div class="mat-elevation-z8">
+        <div class="loading-overlay" *ngIf="loading">
+            <mat-spinner></mat-spinner>
+        </div>
+        <div *ngIf="crossData != null">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">&nbsp;</th>
+                        <th scope="col" *ngFor="let s1 of crossData.sires1">{{s1.name}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let s2 of crossData.sires2; index as si2">
+                        <th scope="row">{{s2.name}}</th>
+                        <td class="column-clickable" *ngFor="let s1 of crossData.sires1; index as si1" (click)="onClickCrosses(si1, si2)">
+                            {{crossData.crosses[si2 * crossData.sires2.length + si1].length}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>        
+    </div>
+</div>

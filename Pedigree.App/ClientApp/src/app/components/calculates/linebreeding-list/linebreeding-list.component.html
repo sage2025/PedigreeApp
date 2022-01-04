@@ -1,0 +1,43 @@
+<div class="mat-elevation-z8 tab-view">
+    <div class="loading-overlay" *ngIf="loading">
+        <mat-spinner></mat-spinner>
+    </div>
+    <table mat-table [dataSource]="linebreedingData" matSort matSortActive="inbreed" matSortDisableClear matSortDirection="desc">
+
+        <ng-container matColumnDef="no">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="column-no"> No </th>
+            <td mat-cell *matCellDef="let i = index"> {{i + 1 + paginator.pageSize * paginator.pageIndex}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 150px;"> Name </th>
+            <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="stats">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Inbreeding Status </th>
+            <td mat-cell *matCellDef="let row"> {{row.stats ? row.stats.join(' X ') : ''}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="crosses">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Crosses </th>
+            <td mat-cell *matCellDef="let row"> {{row.crosses}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="inbreed">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Inbreed </th>
+            <td mat-cell *matCellDef="let row"> {{row.inbreed}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="relation">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> AGR </th>
+            <td mat-cell *matCellDef="let row"> {{row.relation}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <div class="p-5 text-center text-danger" *ngIf="linebreedingData.data.length === 0">No Results to show at the moment.</div>
+
+    <mat-paginator [length]="linebreedingData.data.length" [pageSize]="[100]"></mat-paginator>
+</div>
